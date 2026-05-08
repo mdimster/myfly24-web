@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ─── Brand-Farben (aus Logo extrahiert) ─── */
+  --color-navy: #1A2847;
+  --color-blue: #3454A1;
+  --color-blue-soft: #EAEEF7;
+  --color-amber: #E89B3A;
+  --color-amber-hover: #D08828;
+
+  /* ─── Backgrounds ─── */
+  --color-bg: #FAF7F2;
+  --color-cream: #F5F1EA;
+  --color-border: #E8E2D5;
+
+  /* ─── Inks ─── */
+  --color-ink-muted: #6B6B6B;
+  --color-ink-subtle: #9A9A9A;
+
+  /* ─── Typografie ─── */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-navy);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display-Schrift für Headlines, Tags, Magazin */
+.font-display {
+  font-family: var(--font-display);
 }
