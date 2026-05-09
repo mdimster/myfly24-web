@@ -1,11 +1,30 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "myFly24 – KI-Reiseberater",
+  title: "myFly24 – Dein KI-Reiseberater",
   description:
-    "Drei Fragen, eine klare Empfehlung. myFly24 findet die Reise, die wirklich zu dir passt.",
-  robots: { index: false, follow: false }, // Beta: nicht crawlen
+    "Drei Fragen, eine klare Empfehlung. myFly24 findet die beste Reise für dich – persönlich, transparent, ohne endlose Suche.",
+  metadataBase: new URL("https://beta.myfly24.com"),
+  openGraph: {
+    title: "myFly24 – Dein KI-Reiseberater",
+    description:
+      "Drei Fragen, eine klare Empfehlung. Persönlich, transparent, ohne endlose Suche.",
+    url: "https://beta.myfly24.com",
+    siteName: "myFly24",
+    locale: "de_DE",
+    type: "website",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FAF7F2",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -15,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className="min-h-screen bg-bg text-navy">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

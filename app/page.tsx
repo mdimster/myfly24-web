@@ -1,275 +1,402 @@
-"use client";
-
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ARTICLES, DESTINATIONS } from "./data";
 
-const INITIAL_CONVERSATION = [
-  { role: "ai" as const, text: "Hi 👋 Wo zieht es dich hin – und was ist dir wichtig?" },
-];
+/* ─── SVG Icon Components ─── */
 
-const PRIORITY_OPTIONS = [
-  { key: "comfort", label: "Bequem" },
-  { key: "price", label: "Günstig" },
-  { key: "family", label: "Familienfreundlich" },
-  { key: "flexibility", label: "Flexibel" },
-];
-
-type Message = { role: "ai" | "user"; text: string };
-
-export default function Home() {
-  const [conversation, setConversation] = useState<Message[]>(INITIAL_CONVERSATION);
-  const [input, setInput] = useState("");
-  const [showQuickReplies, setShowQuickReplies] = useState(false);
-
-  const sendUserMessage = (text: string) => {
-    if (!text.trim()) return;
-    setConversation([
-      ...conversation,
-      { role: "user", text },
-      { role: "ai", text: "Klingt nach Strand und Direktflug. Was zählt am meisten?" },
-    ]);
-    setInput("");
-    setShowQuickReplies(true);
-  };
-
-  const featured = ARTICLES[0];
-  const list = ARTICLES.slice(1, 4);
-
+function SparkleIcon({ className }: { className?: string }) {
   return (
-    <div>
-      {/* ─── HEADER ─── */}
-      <header className="flex items-center justify-between px-5 py-3.5 bg-white border-b border-[#F0EDE6]">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-[18px]">✈</span>
-          <span className="font-display text-[17px] font-semibold text-navy">
-            my<span className="text-blue">Fly</span>24
-          </span>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" />
+      <path d="M18 14l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" />
+    </svg>
+  );
+}
+
+function ArrowUpIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5" />
+      <polyline points="5 12 12 5 19 12" />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg className="w-[26px] h-[26px] text-navy opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg className="w-[26px] h-[26px] text-navy opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 6v6l4 2" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon() {
+  return (
+    <svg className="w-[26px] h-[26px] text-navy opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
+}
+
+function HeartIcon() {
+  return (
+    <svg className="w-[26px] h-[26px] text-navy opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+}
+
+/* ─── Data ─── */
+
+const magazineArticles = [
+  {
+    slug: "schoenheit-suedeuropas",
+    image: "/images/stone-village.jpg",
+    tag: "Geheimtipps",
+    title: "Die unerwartete Schönheit Südeuropas",
+    excerpt:
+      "Abseits der Touristenströme warten Dörfer, die sich anfühlen wie eine Zeitreise.",
+  },
+  {
+    slug: "business-class-guenstig",
+    image: "/images/airplane-window.jpg",
+    tag: "Richtig fliegen",
+    title: "Business Class unter 800\u202F€? So geht\u2019s.",
+    excerpt:
+      "Die besten Strategien für Premium-Flüge zum Bruchteil des regulären Preises.",
+  },
+  {
+    slug: "mit-kindern-reisen",
+    image: "/images/family-coast.jpg",
+    tag: "Familienreisen",
+    title: "Mit Kindern reisen, ohne den Verstand zu verlieren",
+    excerpt:
+      "Fünf Familien verraten, warum ihre besten Urlaube die ungeplanten waren.",
+  },
+];
+
+const destinations = [
+  {
+    name: "Kroatien",
+    tagline: "Küste, Kultur, Klarheit",
+    image: "/images/coast-sunset.jpg",
+  },
+  {
+    name: "Österreich",
+    tagline: "Berge, die den Kopf frei machen",
+    image: "/images/alpine-lake.jpg",
+  },
+  {
+    name: "Griechenland",
+    tagline: "Türkis, Tavernen, Tiefenentspannung",
+    image: "/images/turquoise-bay.jpg",
+  },
+  {
+    name: "Mallorca",
+    tagline: "Mehr als nur Ballermann",
+    image: "/images/family-beach.jpg",
+  },
+];
+
+const trustItems = [
+  {
+    icon: <UserIcon />,
+    title: "Persönliche Empfehlungen",
+    desc: "statt endloser Suche",
+  },
+  {
+    icon: <ClockIcon />,
+    title: "Transparente Optionen",
+    desc: "für jedes Budget",
+  },
+  {
+    icon: <CheckCircleIcon />,
+    title: "Smarte Entscheidungen",
+    desc: "auf einen Blick",
+  },
+  {
+    icon: <HeartIcon />,
+    title: "Mehr Zeit für das,",
+    desc: "was wirklich zählt",
+  },
+];
+
+/* ─── Page ─── */
+
+export default function HomePage() {
+  return (
+    <>
+      {/* ─── NAV ─── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 h-16 px-12 flex items-center justify-between bg-[rgba(250,247,242,0.85)] backdrop-blur-lg border-b border-[rgba(229,224,216,0.5)]">
+        <Link
+          href="/"
+          className="font-display text-[22px] font-semibold text-navy no-underline tracking-tight"
+        >
+          my<span className="text-amber">Fly</span>24
         </Link>
-        <div className="flex items-center gap-3.5">
-          <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-            <span className="text-[11px] text-ink-muted">Online</span>
-          </div>
+        <div className="flex gap-8">
+          <Link href="#magazin" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+            Magazin
+          </Link>
+          <Link href="#reiseziele" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+            Reiseziele
+          </Link>
+          <Link href="#so-funktionierts" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+            So funktioniert&apos;s
+          </Link>
         </div>
-      </header>
+      </nav>
 
-      {/* ─── CHAT-HERO ─── */}
-      <section className="bg-[#FAFAF7] px-5 pt-6 pb-4 border-b border-border">
-        <div className="max-w-xl mx-auto">
-          <div className="text-center mb-5">
-            <span className="inline-flex items-center gap-1.5 bg-blue-soft text-navy px-3 py-1 rounded-full text-[11px] font-medium">
-              <span>✨</span>
-              Dein KI-Reiseberater
-            </span>
-            <h1 className="font-display text-2xl md:text-3xl font-medium text-navy mt-3 mb-1 tracking-tight leading-tight">
-              Erzähl mir von deiner Reise.
-            </h1>
-            <p className="text-[13px] text-ink-muted">Drei Fragen, eine klare Empfehlung.</p>
-          </div>
-
-          {/* Bubble-Stream */}
-          <div className="mb-3.5">
-            {conversation.map((msg, i) =>
-              msg.role === "ai" ? (
-                <div key={i} className="flex gap-2 mb-3 items-start">
-                  <div className="w-[26px] h-[26px] flex-shrink-0 rounded-full bg-gradient-to-br from-blue to-navy flex items-center justify-center text-white text-[13px]">
-                    ✨
-                  </div>
-                  <div className="bg-white border border-border rounded-[14px] rounded-bl-[4px] px-3 py-2.5 max-w-[82%]">
-                    <p className="text-[13px] text-navy leading-relaxed m-0">{msg.text}</p>
-                  </div>
-                </div>
-              ) : (
-                <div key={i} className="flex justify-end mb-3">
-                  <div className="bg-navy text-white rounded-[14px] rounded-br-[4px] px-3 py-2.5 max-w-[82%]">
-                    <p className="text-[13px] leading-relaxed m-0">{msg.text}</p>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-
-          {/* Quick-Replies */}
-          {showQuickReplies && (
-            <div className="flex flex-wrap gap-1.5 pl-9 mb-3.5">
-              {PRIORITY_OPTIONS.map((opt) => (
-                <Link
-                  key={opt.key}
-                  href={`/advisor?priority=${opt.key}`}
-                  className="bg-white border border-border text-navy hover:border-navy hover:bg-blue-soft transition-colors px-3 py-1.5 rounded-full text-[12px]"
-                >
-                  {opt.label}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {/* Input-Pill */}
-          <div className="flex items-center gap-2 pl-3.5 pr-1.5 py-1.5 bg-white border border-border rounded-full">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendUserMessage(input)}
-              placeholder="Antwort eingeben oder oben antippen …"
-              className="flex-1 py-1.5 text-[13px] bg-transparent outline-none text-navy"
-            />
-            <button
-              onClick={() => sendUserMessage(input)}
-              disabled={!input.trim()}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                input.trim() ? "bg-navy text-white cursor-pointer" : "bg-border text-white cursor-not-allowed"
-              }`}
-            >
-              ↑
-            </button>
-          </div>
+      {/* ─── HERO ─── */}
+      <section className="hero mt-16">
+        <div className="hero-bg">
+          <Image
+            src="/images/hero-cappadocia.jpg"
+            alt="Reisende blickt auf Heißluftballons in Kappadokien bei Sonnenuntergang"
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "70% center" }}
+          />
         </div>
-      </section>
+        <div className="hero-overlay" />
 
-      {/* ─── ÜBERGANG ─── */}
-      <section className="bg-cream pt-7 pb-3.5 border-t border-border text-center">
-        <div className="max-w-xs mx-auto">
-          <div className="flex items-center justify-center gap-3.5">
-            <span className="h-px w-10 bg-navy/30" />
-            <span className="font-display text-[13px] italic text-ink-muted">Noch unentschlossen?</span>
-            <span className="h-px w-10 bg-navy/30" />
+        <div className="hero-content">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white border border-border text-[13px] font-medium text-navy mb-7 shadow-[0_2px_8px_rgba(26,40,71,0.06)]">
+            <span className="text-sm">✨</span>
+            Dein KI-Reiseberater
           </div>
-          <p className="text-[12px] text-ink-muted mt-2">
-            Geschichten und Tipps für jeden Reisetyp – aus unserem Magazin.
+
+          {/* Headline */}
+          <h1 className="font-display text-[56px] font-semibold leading-[1.1] tracking-tight text-navy mb-3.5">
+            <em className="italic">Erzähl mir von</em>
+            <br />
+            deiner Reise.
+          </h1>
+          <p className="text-[18px] text-ink-muted mb-9 leading-relaxed">
+            Drei Fragen, eine klare Empfehlung.
           </p>
+
+          {/* Chat */}
+          <div className="mb-0">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="chat-avatar">
+                <SparkleIcon className="w-5 h-5 text-white" />
+              </div>
+              <div className="chat-message">
+                Hi 👋 Wo zieht es dich hin –
+                <br />
+                und was ist dir wichtig?
+              </div>
+            </div>
+
+            <div className="chat-input-row">
+              <input
+                type="text"
+                placeholder="Antwort eingeben oder oben antippen ..."
+                readOnly
+                tabIndex={-1}
+              />
+              <button className="chat-send-btn" aria-label="Absenden">
+                <ArrowUpIcon />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust Strip */}
+        <div className="trust-strip">
+          {trustItems.map((item) => (
+            <div key={item.title} className="flex items-start gap-2.5">
+              {item.icon}
+              <div className="flex flex-col">
+                <span className="text-[13px] font-semibold text-navy leading-tight">
+                  {item.title}
+                </span>
+                <span className="text-[12px] text-ink-muted leading-tight">
+                  {item.desc}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ─── MAGAZIN-FEATURED ─── */}
-      <section className="bg-cream px-5 pb-7 pt-2">
-        <div className="max-w-xl mx-auto">
-          <Link href={`/magazin/${featured.slug}`} className="block mb-5">
-            <div
-              className="h-[220px] rounded-sm relative overflow-hidden"
-              style={{ background: featured.gradient }}
-            >
-              <span className="absolute top-3.5 left-3.5 bg-cream/95 text-navy px-2.5 py-1 text-[10px] font-semibold tracking-[0.1em] uppercase">
-                Lesetipp der Woche
-              </span>
-            </div>
-            <div className="pt-3.5">
-              <p className="font-display text-[11px] tracking-[0.1em] uppercase text-navy mb-1.5 font-semibold">
-                Aus dem Magazin
-              </p>
-              <h2 className="font-display text-2xl font-medium text-navy mb-2 leading-tight tracking-tight">
-                {featured.title}
-              </h2>
-              <p className="font-display text-[14px] text-navy/85 leading-relaxed">
-                {featured.teaser}{" "}
-                <span className="text-blue font-medium">Lesen →</span>
-              </p>
-            </div>
-          </Link>
+      {/* ─── MAGAZIN ─── */}
+      <div id="magazin" className="text-center pt-16 px-16">
+        <div className="w-12 h-px bg-border mx-auto mb-5" />
+        <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+          Magazin
+        </p>
+        <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
+          <em className="italic text-amber">Noch</em> unentschlossen?
+        </h2>
+        <p className="text-base text-ink-muted mb-12 leading-relaxed">
+          Geschichten, Inspiration und Tipps aus unserem Magazin.
+        </p>
+      </div>
 
-          {/* Magazin-Liste */}
-          <div className="border-t border-navy/15 pt-3.5">
-            {list.map((article, i) => (
-              <Link
-                key={article.slug}
-                href={`/magazin/${article.slug}`}
-                className={`flex gap-3.5 py-3 ${
-                  i < list.length - 1 ? "border-b border-navy/10" : ""
-                }`}
-              >
-                <div
-                  className="w-[72px] h-[72px] flex-shrink-0 rounded-sm"
-                  style={{ background: article.gradient }}
+      <section className="px-16 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1200px] mx-auto">
+          {magazineArticles.map((article) => (
+            <article key={article.slug} className="magazine-card">
+              <div className="relative h-[220px]">
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: "cover" }}
                 />
-                <div className="flex-1">
-                  <p className="font-display text-[10px] tracking-[0.1em] uppercase text-ink-muted mb-0.5">
-                    {article.tag}
-                  </p>
-                  <p className="font-display text-[15px] font-medium text-navy mb-0.5 leading-snug">
-                    {article.title}
-                  </p>
-                  <p className="text-[12px] text-ink-muted leading-relaxed">{article.teaser}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <Link
-            href="/magazin"
-            className="block text-center mt-4 text-[13px] text-blue font-medium"
-          >
-            Mehr im Magazin →
-          </Link>
+              </div>
+              <div className="p-5 pb-6">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-amber font-semibold mb-2">
+                  {article.tag}
+                </p>
+                <h3 className="font-display text-xl font-medium leading-snug text-navy mb-2.5">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-ink-muted leading-relaxed">
+                  {article.excerpt}
+                </p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      {/* ─── REISEZIEL-BRIDGE ─── */}
-      <section className="bg-white px-5 py-6 border-t border-border">
-        <div className="max-w-xl mx-auto">
-          <div className="flex items-baseline justify-between mb-1">
-            <h2 className="font-display text-[19px] font-medium text-navy">Beliebte Reiseziele</h2>
-            <Link href="/reiseziele" className="text-[13px] text-blue">
-              Alle →
-            </Link>
-          </div>
-          <p className="text-[12px] text-ink-subtle mb-3.5">Direkt zur Beratung mit Vorbelegung</p>
+      {/* ─── REISEZIELE ─── */}
+      <div id="reiseziele" className="text-center pt-16 px-16">
+        <div className="w-12 h-px bg-border mx-auto mb-5" />
+        <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+          Reiseziele
+        </p>
+        <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
+          <em className="italic text-amber">Wohin</em> soll&apos;s gehen?
+        </h2>
+        <p className="text-base text-ink-muted mb-12 leading-relaxed">
+          Unsere beliebtesten Ziele – handverlesen, nicht algorithmisch.
+        </p>
+      </div>
 
-          <div className="grid grid-cols-2 gap-2.5">
-            {DESTINATIONS.map((d) => (
-              <Link
-                key={d.slug}
-                href={`/advisor?destination=${d.slug}`}
-                className="rounded-lg overflow-hidden bg-white border border-border hover:border-navy hover:-translate-y-0.5 transition-all duration-150"
-              >
-                <div
-                  className="h-[95px] relative"
-                  style={{ background: d.gradient }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-navy/50" />
-                  <span className="absolute left-2 bottom-2 bg-navy/90 text-white text-[10px] px-1.5 py-0.5 rounded-sm font-medium">
-                    ab {d.price_from} €
-                  </span>
-                </div>
-                <div className="px-2.5 py-2">
-                  <p className="font-display text-[13px] font-semibold text-navy m-0">{d.name}</p>
-                  <p className="text-[11px] text-ink-muted mt-0.5">{d.tagline}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+      <section className="px-16 pb-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-[1200px] mx-auto">
+          {destinations.map((dest) => (
+            <div key={dest.name} className="dest-card">
+              <Image
+                src={dest.image}
+                alt={dest.name}
+                fill
+                sizes="(max-width: 1024px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+              <div className="dest-overlay">
+                <p className="font-display text-xl font-medium text-white mb-0.5">
+                  {dest.name}
+                </p>
+                <p className="text-[13px] text-white/75">{dest.tagline}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── SO FUNKTIONIERT'S ─── */}
+      <section
+        id="so-funktionierts"
+        className="py-20 px-16 bg-white border-t border-b border-border"
+      >
+        <div className="text-center mb-12">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+            So funktioniert&apos;s
+          </p>
+          <h2 className="font-display text-4xl font-medium tracking-tight text-navy">
+            <em className="italic text-amber">Drei Schritte</em> zur perfekten
+            Reise
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-[960px] mx-auto text-center">
+          {[
+            {
+              n: "1",
+              title: "Erzähl uns davon",
+              desc: "Beantworte drei kurze Fragen – zu Ziel, Budget und was dir wichtig ist.",
+            },
+            {
+              n: "2",
+              title: "Wir analysieren",
+              desc: "Unsere KI vergleicht tausende Optionen und findet die beste Kombination.",
+            },
+            {
+              n: "3",
+              title: "Du entscheidest",
+              desc: "Eine Hauptempfehlung, transparent begründet. Keine endlosen Listen.",
+            },
+          ].map((step) => (
+            <div key={step.n}>
+              <div className="step-number">{step.n}</div>
+              <p className="text-base font-semibold text-navy mb-2">
+                {step.title}
+              </p>
+              <p className="text-sm text-ink-muted leading-relaxed">
+                {step.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ─── NEWSLETTER ─── */}
-      <section className="bg-navy text-white px-5 py-6">
-        <div className="max-w-xl mx-auto">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span>✉</span>
-            <p className="text-[14px] font-semibold m-0">Reise-Tipps die wirklich passen</p>
-          </div>
-          <p className="text-[13px] opacity-85 mb-3.5 leading-relaxed">
-            Saisonale Deals und Magazin-Stories – nur was zu deinem Profil passt.
-          </p>
-          <div className="flex gap-2">
-            <input
-              type="email"
-              placeholder="deine@email.de"
-              className="flex-1 min-w-0 px-3.5 py-2.5 text-[14px] rounded-lg outline-none text-navy"
-            />
-            <button className="bg-amber hover:bg-amber-hover transition-colors text-white px-4.5 py-2.5 rounded-lg text-[14px] font-semibold whitespace-nowrap">
-              Anmelden
-            </button>
-          </div>
+      <section className="bg-navy py-20 px-16 text-center">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-white/50 font-semibold mb-2.5">
+          Der Brief
+        </p>
+        <h2 className="font-display text-[32px] font-medium text-white mb-2 tracking-tight">
+          <em className="italic text-amber">Reisewissen,</em> das ankommt.
+        </h2>
+        <p className="text-[15px] text-white/60 mb-8 leading-relaxed">
+          Einmal pro Woche: Deals, Geheimtipps und Entscheidungshilfen. Kein
+          Spam.
+        </p>
+        <div className="newsletter-form">
+          <input
+            type="email"
+            placeholder="Deine E-Mail-Adresse"
+            readOnly
+            tabIndex={-1}
+          />
+          <button className="newsletter-btn">Anmelden</button>
         </div>
       </section>
 
-      {/* ─── FOOTER-DISCLAIMER ─── */}
-      <p className="text-[11px] text-ink-subtle text-center py-5 px-5 leading-relaxed bg-white">
-        myFly24 ist ein Service der performance werk GmbH. Bei Buchungen über
-        Partner-Links erhalten wir eine Provision – für dich entstehen keine
-        Mehrkosten.
-      </p>
-    </div>
+      {/* ─── FOOTER ─── */}
+      <footer className="py-10 px-16 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
+        <span className="text-[13px] text-ink-subtle">
+          © 2026 myFly24 · performance werk Media GmbH
+        </span>
+        <div className="flex gap-6">
+          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
+            Impressum
+          </Link>
+          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
+            Datenschutz
+          </Link>
+          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
+            AGB
+          </Link>
+        </div>
+      </footer>
+    </>
   );
 }
