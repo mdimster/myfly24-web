@@ -138,11 +138,15 @@ export default function HomePage() {
     <>
       {/* ─── NAV ─── */}
       <nav className="fixed top-0 left-0 right-0 z-50 h-16 px-12 flex items-center justify-between bg-[rgba(250,247,242,0.85)] backdrop-blur-lg border-b border-[rgba(229,224,216,0.5)]">
-        <Link
-          href="/"
-          className="font-display text-[22px] font-semibold text-navy no-underline tracking-tight"
-        >
-          my<span className="text-amber">Fly</span>24
+        <Link href="/" className="block">
+          <Image
+            src="/images/logo-myfly24.png"
+            alt="myFly24"
+            width={93}
+            height={40}
+            priority
+            style={{ height: "32px", width: "auto" }}
+          />
         </Link>
         <div className="flex gap-8">
           <Link href="#magazin" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
