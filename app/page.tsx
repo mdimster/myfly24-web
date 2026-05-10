@@ -137,8 +137,8 @@ export default function HomePage() {
   return (
     <>
       {/* ─── NAV ─── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 h-14 sm:h-16 px-5 sm:px-12 flex items-center justify-between bg-[rgba(250,247,242,0.85)] backdrop-blur-lg border-b border-[rgba(229,224,216,0.5)]">
-        <Link href="/" className="block">
+      <nav className="fixed top-0 left-0 right-0 z-50 h-14 sm:h-16 px-4 sm:px-12 flex items-center justify-between bg-[rgba(250,247,242,0.85)] backdrop-blur-lg border-b border-[rgba(229,224,216,0.5)]">
+        <Link href="/" className="block flex-shrink-0">
           <Image
             src="/images/logo-myfly24.png"
             alt="myFly24"
@@ -148,15 +148,15 @@ export default function HomePage() {
             style={{ height: "28px", width: "auto" }}
           />
         </Link>
-        <div className="hidden sm:flex gap-8">
-          <Link href="#magazin" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+        <div className="flex gap-4 sm:gap-8">
+          <Link href="#magazin" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
             Magazin
           </Link>
-          <Link href="#reiseziele" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+          <Link href="#reiseziele" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
             Reiseziele
           </Link>
-          <Link href="#so-funktionierts" className="text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
-            So funktioniert&apos;s
+          <Link href="#so-funktionierts" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors whitespace-nowrap">
+            So geht&apos;s
           </Link>
         </div>
       </nav>
