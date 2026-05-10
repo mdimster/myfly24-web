@@ -308,7 +308,7 @@ body {
   }
 
   .hero-bg {
-    height: 45vh;
+    height: 55vh;
     position: relative;
     inset: auto;
   }
@@ -322,17 +322,17 @@ body {
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(250, 247, 242, 1) 0%,
-      rgba(250, 247, 242, 0.7) 40%,
-      rgba(250, 247, 242, 0.1) 70%,
-      rgba(250, 247, 242, 0) 100%
+      rgba(250, 247, 242, 0.95) 0%,
+      rgba(250, 247, 242, 0.85) 15%,
+      rgba(250, 247, 242, 0.4) 50%,
+      rgba(250, 247, 242, 0) 75%
     );
   }
 
   .hero-content {
     position: relative;
     padding: 0 20px 24px;
-    margin-top: -80px;
+    margin-top: -200px;
     max-width: 100%;
     z-index: 2;
   }
