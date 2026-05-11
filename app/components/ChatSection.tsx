@@ -18,16 +18,24 @@ export default function ChatSection() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isActive) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isActive]);
+    if (isActive) {
+      // Chat-Container ins Sichtfeld scrollen
+      chatRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      inputRef.current?.focus();
+    }
+  }, [isActive]);
 
   useEffect(() => {
-    if (isActive) inputRef.current?.focus();
-  }, [isActive]);
+    // Neue Nachrichten: nur innerhalb des Chat-Containers scrollen
+    if (isActive && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [messages, isActive]);
 
   const sendMessage = async () => {
     const trimmed = input.trim();
@@ -70,7 +78,7 @@ export default function ChatSection() {
   // ─── Active: Inline Chat ───
   if (isActive) {
     return (
-      <div className="chat-inline">
+      <div ref={chatRef} className="chat-inline">
         <div className="chat-inline-progress">
           {[1, 2, 3].map((step) => (
             <div key={step} className={`chat-dot ${userCount >= step ? "done" : ""} ${userCount === step - 1 ? "now" : ""}`} />
