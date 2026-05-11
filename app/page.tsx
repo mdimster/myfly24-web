@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ChatSection from "./components/ChatSection";
+import TravelBanner from "./components/TravelBanner";
 
 /* ─── SVG Icon Components ─── */
 
@@ -197,78 +198,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── AKTUELLE REISEHINWEISE ─── */}
-      <section id="reisehinweise" className="py-12 sm:py-16 px-5 sm:px-16 bg-white border-b border-border">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-full bg-amber/10 flex items-center justify-center flex-shrink-0">
-              <svg className="w-5 h-5 text-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                <line x1="12" y1="9" x2="12" y2="13" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-navy">
-                Aktuelle Reisehinweise
-              </h2>
-              <p className="text-sm text-ink-muted">Stand: Mai 2026 · Vor jeder Buchung prüfen</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              {
-                region: "Dubai & VAE",
-                level: "info",
-                text: "Verschärfte Einreisekontrollen und strenge Social-Media-Regeln. Alkoholkonsum nur in lizenzierten Bereichen.",
-              },
-              {
-                region: "Kerosin-Versorgung",
-                level: "warning",
-                text: "Vereinzelte Engpässe an europäischen Regionalflughäfen. Große Hubs (FRA, MUC, VIE, ZRH) nicht betroffen.",
-              },
-              {
-                region: "Griechenland",
-                level: "info",
-                text: "Hohe Waldbrandgefahr Juli–September. Reiseversicherung mit Stornoschutz empfohlen.",
-              },
-              {
-                region: "Flugstreiks",
-                level: "warning",
-                text: "Air France/KLM-Streiks möglich im Sommer 2026. Alternative Airlines einplanen.",
-              },
-              {
-                region: "Türkei Ostküste",
-                level: "alert",
-                text: "Erhöhte Erdbebengefahr in der Ost-Türkei. Westküste und Istanbul normal buchbar.",
-              },
-              {
-                region: "Generell",
-                level: "info",
-                text: "Reiseversicherung mit Stornoschutz generell empfohlen – unser Berater hilft bei der Auswahl.",
-              },
-            ].map((item) => (
-              <div key={item.region} className="travel-warning-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`travel-warning-badge ${item.level}`}>
-                    {item.level === "alert" ? "⚠️" : item.level === "warning" ? "🔶" : "ℹ️"}
-                  </span>
-                  <span className="text-sm font-semibold text-navy">{item.region}</span>
-                </div>
-                <p className="text-[13px] text-ink-muted leading-relaxed">{item.text}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-ink-subtle mt-6 text-center">
-            Diese Hinweise ersetzen nicht die offizielle Reiseberatung des Auswärtigen Amts. Aktuelle Informationen unter{" "}
-            <a href="https://www.auswaertiges-amt.de" target="_blank" rel="noopener noreferrer" className="underline hover:text-navy">
-              auswaertiges-amt.de
-            </a>
-          </p>
-        </div>
-      </section>
+      {/* ─── REISEHINWEISE BANNER ─── */}
+      <TravelBanner />
 
       {/* ─── MAGAZIN ─── */}
       <div id="magazin" className="text-center pt-12 sm:pt-16 px-5 sm:px-16">

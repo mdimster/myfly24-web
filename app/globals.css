@@ -492,22 +492,129 @@ body {
   cursor: not-allowed;
 }
 
-/* ─── Travel Warnings ─── */
-.travel-warning-card {
-  padding: 16px;
-  border-radius: 12px;
+/* ─── Travel Banner ─── */
+.travel-banner-wrap {
+  border-bottom: 1px solid var(--color-border, #E5E0D8);
+  background: white;
+}
+
+.travel-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 64px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.travel-banner:hover {
+  background: rgba(232, 155, 58, 0.04);
+}
+
+.travel-banner-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.travel-banner-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-navy, #1A2847);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.travel-banner-text strong {
+  font-weight: 600;
+}
+
+.travel-banner-regions {
+  color: var(--color-ink-muted, #6B6B6B);
+  font-weight: 400;
+}
+
+.travel-banner-chevron {
+  flex-shrink: 0;
+  color: var(--color-ink-subtle, #9A9A9A);
+  transition: transform 0.2s;
+}
+
+.travel-banner-chevron.open {
+  transform: rotate(180deg);
+}
+
+.travel-banner-details {
+  padding: 0 64px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  animation: bannerExpand 0.2s ease;
+}
+
+@keyframes bannerExpand {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.travel-banner-item {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
   background: var(--color-bg, #FAF7F2);
   border: 1px solid var(--color-border, #E5E0D8);
-  transition: box-shadow 0.2s;
 }
 
-.travel-warning-card:hover {
-  box-shadow: 0 4px 16px rgba(26, 40, 71, 0.06);
+.travel-banner-badge {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.travel-warning-badge {
-  font-size: 14px;
-  line-height: 1;
+.travel-banner-region {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-navy, #1A2847);
+  margin-bottom: 2px;
+}
+
+.travel-banner-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--color-ink-muted, #6B6B6B);
+  line-height: 1.45;
+}
+
+.travel-banner-disclaimer {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--color-ink-subtle, #9A9A9A);
+  margin-top: 4px;
+}
+
+.travel-banner-disclaimer a {
+  color: var(--color-ink-subtle, #9A9A9A);
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .travel-banner {
+    padding: 10px 20px;
+  }
+  .travel-banner-regions {
+    display: none;
+  }
+  .travel-banner-details {
+    padding: 0 20px 16px;
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── Responsive ─── */
