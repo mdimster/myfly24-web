@@ -1,25 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import ChatSection from "./components/ChatSection";
 
 /* ─── SVG Icon Components ─── */
-
-function SparkleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" />
-      <path d="M18 14l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" />
-    </svg>
-  );
-}
-
-function ArrowUpIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="19" x2="12" y2="5" />
-      <polyline points="5 12 12 5 19 12" />
-    </svg>
-  );
-}
 
 function UserIcon() {
   return (
@@ -193,30 +176,7 @@ export default function HomePage() {
           </p>
 
           {/* Chat */}
-          <div className="mb-0">
-            <div className="flex items-start gap-3 mb-4">
-              <div className="chat-avatar">
-                <SparkleIcon className="w-5 h-5 text-white" />
-              </div>
-              <div className="chat-message">
-                Hi 👋 Wo zieht es dich hin –
-                <br />
-                und was ist dir wichtig?
-              </div>
-            </div>
-
-            <div className="chat-input-row">
-              <input
-                type="text"
-                placeholder="Antwort eingeben oder oben antippen ..."
-                readOnly
-                tabIndex={-1}
-              />
-              <button className="chat-send-btn" aria-label="Absenden">
-                <ArrowUpIcon />
-              </button>
-            </div>
-          </div>
+          <ChatSection />
         </div>
 
         {/* Trust Strip */}
