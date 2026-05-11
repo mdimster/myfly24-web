@@ -22,6 +22,32 @@ export default function ChatSection() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Simple Markdown → HTML
+  function renderMarkdown(text: string) {
+    return text
+      .split("\n")
+      .map((line) => {
+        // Bold: **text**
+        line = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+        // Italic: *text*
+        line = line.replace(/\*(.+?)\*/g, "<em>$1</em>");
+        // List items: - text
+        if (line.match(/^[-–•]\s/)) {
+          line = "<li>" + line.replace(/^[-–•]\s/, "") + "</li>";
+        }
+        // Numbered list: 1. text
+        if (line.match(/^\d+\.\s/)) {
+          line = "<li>" + line.replace(/^\d+\.\s/, "") + "</li>";
+        }
+        return line;
+      })
+      .join("<br />")
+      // Clean up: wrap consecutive <li> in <ul>
+      .replace(/(<li>.*?<\/li>(<br \/>)?)+/g, (match) =>
+        "<ul>" + match.replace(/<br \/>/g, "") + "</ul>"
+      );
+  }
+
   useEffect(() => {
     if (isActive) {
       // Chat-Container ins Sichtfeld scrollen
@@ -99,9 +125,11 @@ export default function ChatSection() {
                 </div>
               )}
               <div className={`chat-msg-bubble ${msg.role}`}>
-                {msg.content.split("\n").map((line, j) => (
-                  <span key={j}>{line}{j < msg.content.split("\n").length - 1 && <br />}</span>
-                ))}
+                {msg.role === "assistant" ? (
+                  <div dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }} />
+                ) : (
+                  msg.content
+                )}
               </div>
             </div>
           ))}
