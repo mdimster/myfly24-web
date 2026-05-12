@@ -182,6 +182,35 @@ export default function HomePage() {
       {/* ─── REISEHINWEISE BANNER ─── */}
       <TravelBanner />
 
+      {/* ─── SO FUNKTIONIERT'S ─── */}
+      <section
+        id="so-funktionierts"
+        className="py-16 sm:py-20 px-5 sm:px-16 bg-white border-t border-b border-border"
+      >
+        <div className="text-center mb-12">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+            So funktioniert&apos;s
+          </p>
+          <h2 className="font-display text-4xl font-medium tracking-tight text-navy">
+            <em className="italic text-amber">Drei Schritte</em> zur perfekten
+            Reise
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-[960px] mx-auto text-center">
+          {[
+            { n: "1", title: "Erzähl uns davon", desc: "Beantworte drei kurze Fragen – zu Ziel, Budget und was dir wichtig ist." },
+            { n: "2", title: "Wir analysieren", desc: "Unsere KI vergleicht tausende Optionen und findet die beste Kombination." },
+            { n: "3", title: "Du entscheidest", desc: "Eine Hauptempfehlung, transparent begründet. Keine endlosen Listen." },
+          ].map((step) => (
+            <div key={step.n}>
+              <div className="step-number">{step.n}</div>
+              <p className="text-base font-semibold text-navy mb-2">{step.title}</p>
+              <p className="text-sm text-ink-muted leading-relaxed">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ─── MAGAZIN ─── */}
       <div id="magazin" className="text-center pt-12 sm:pt-16 px-5 sm:px-16">
         <div className="w-12 h-px bg-border mx-auto mb-5" />
@@ -299,71 +328,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── SO FUNKTIONIERT'S ─── */}
-      <section
-        id="so-funktionierts"
-        className="py-16 sm:py-20 px-5 sm:px-16 bg-white border-t border-b border-border"
-      >
-        <div className="text-center mb-12">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
-            So funktioniert&apos;s
-          </p>
-          <h2 className="font-display text-4xl font-medium tracking-tight text-navy">
-            <em className="italic text-amber">Drei Schritte</em> zur perfekten
-            Reise
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-[960px] mx-auto text-center">
-          {[
-            {
-              n: "1",
-              title: "Erzähl uns davon",
-              desc: "Beantworte drei kurze Fragen – zu Ziel, Budget und was dir wichtig ist.",
-            },
-            {
-              n: "2",
-              title: "Wir analysieren",
-              desc: "Unsere KI vergleicht tausende Optionen und findet die beste Kombination.",
-            },
-            {
-              n: "3",
-              title: "Du entscheidest",
-              desc: "Eine Hauptempfehlung, transparent begründet. Keine endlosen Listen.",
-            },
-          ].map((step) => (
-            <div key={step.n}>
-              <div className="step-number">{step.n}</div>
-              <p className="text-base font-semibold text-navy mb-2">
-                {step.title}
-              </p>
-              <p className="text-sm text-ink-muted leading-relaxed">
-                {step.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ─── NEWSLETTER ─── */}
-      <section className="bg-navy py-16 sm:py-20 px-5 sm:px-16 text-center">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-white/50 font-semibold mb-2.5">
-          Der Brief
-        </p>
-        <h2 className="font-display text-[32px] font-medium text-white mb-2 tracking-tight">
-          <em className="italic text-amber">Reisewissen,</em> das ankommt.
-        </h2>
-        <p className="text-[15px] text-white/60 mb-8 leading-relaxed">
-          Einmal pro Woche: Deals, Geheimtipps und Entscheidungshilfen. Kein
-          Spam.
-        </p>
-        <div className="newsletter-form">
-          <input
-            type="email"
-            placeholder="Deine E-Mail-Adresse"
-            readOnly
-            tabIndex={-1}
-          />
-          <button className="newsletter-btn">Anmelden</button>
+      <section className="px-5 sm:px-16 py-16 sm:py-20">
+        <div className="nl-gradient max-w-[1100px] mx-auto">
+          <div className="nl-inner">
+            <div className="nl-left">
+              <h2 className="font-display text-[28px] sm:text-[32px] font-medium text-white mb-3 leading-tight">
+                <em className="italic text-amber">Deine besten Deals</em>
+                <br />warten schon.
+              </h2>
+              <p className="text-[14px] text-white/60 leading-relaxed mb-6">
+                Wir filtern täglich hunderte Angebote und schicken dir nur die Highlights, bei denen sich Zuschlagen wirklich lohnt.
+              </p>
+              <div className="flex flex-col gap-3">
+                <div className="nl-benefit"><span className="nl-icon">✈️</span> Exklusive Flug-Deals vor allen anderen</div>
+                <div className="nl-benefit"><span className="nl-icon">🗺️</span> Geheimtipps von echten Reise-Experten</div>
+                <div className="nl-benefit"><span className="nl-icon">💰</span> Spar-Strategien für jedes Budget</div>
+                <div className="nl-benefit"><span className="nl-icon">🛡️</span> Aktuelle Reisewarnungen &amp; Sicherheit</div>
+              </div>
+            </div>
+            <div className="nl-right">
+              <div className="nl-card">
+                <h3 className="font-display text-xl font-medium text-navy mb-1">
+                  Jetzt Vorteile sichern
+                </h3>
+                <p className="text-[12px] text-ink-subtle mb-5">
+                  Kostenlos anmelden und nie wieder Deals verpassen.
+                </p>
+                <div className="nl-field-row">
+                  <div className="nl-field">
+                    <label>Anrede</label>
+                    <select defaultValue="">
+                      <option value="" disabled>Bitte wählen</option>
+                      <option>Herr</option>
+                      <option>Frau</option>
+                      <option>Divers</option>
+                    </select>
+                  </div>
+                  <div className="nl-field">
+                    <label>Vorname</label>
+                    <input type="text" placeholder="Max" />
+                  </div>
+                </div>
+                <div className="nl-field-row">
+                  <div className="nl-field">
+                    <label>Nachname</label>
+                    <input type="text" placeholder="Mustermann" />
+                  </div>
+                  <div className="nl-field">
+                    <label>Geburtsdatum</label>
+                    <input type="text" placeholder="TT.MM.JJJJ" />
+                  </div>
+                </div>
+                <div className="nl-field" style={{ marginBottom: "12px" }}>
+                  <label>E-Mail-Adresse</label>
+                  <input type="email" placeholder="deine@email.de" />
+                </div>
+                <div className="nl-checkbox">
+                  <input type="checkbox" id="nl-optin" />
+                  <label htmlFor="nl-optin">
+                    Ja, ich möchte den myFly24-Newsletter mit Reise-Deals, Tipps und Inspirationen per E-Mail erhalten. Eine Abmeldung ist jederzeit möglich. ✨
+                  </label>
+                </div>
+                <button className="nl-submit">Deals sichern →</button>
+                <p className="text-center text-[11px] text-ink-subtle mt-3">
+                  ✨ Kostenlos · 🔒 Double-Opt-In · ↩️ Jederzeit abmeldbar
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
