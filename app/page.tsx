@@ -278,7 +278,7 @@ export default function HomePage() {
 
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-[1200px] mx-auto">
-          {THEMENWELTEN.slice(0, 6).map((tw) => (
+          {THEMENWELTEN.slice(0, 9).map((tw) => (
             <Link key={tw.slug} href={`/themenwelt/${tw.slug}`} className="themenwelt-card no-underline">
               <Image
                 src={tw.image}
@@ -294,7 +294,19 @@ export default function HomePage() {
       </section>
 
       {/* ─── VERSICHERUNG ─── */}
-      <section className="px-5 sm:px-16 py-12 sm:py-16">
+      <div className="text-center pt-4 px-5 sm:px-16">
+        <div className="w-12 h-px bg-border mx-auto mb-5" />
+        <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+          Absicherung
+        </p>
+        <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
+          <em className="italic text-amber">Sicher</em> in den Urlaub.
+        </h2>
+        <p className="text-base text-ink-muted mb-12 leading-relaxed">
+          Die richtige Versicherung für jede Reise – einfach erklärt.
+        </p>
+      </div>
+      <section className="px-5 sm:px-16 pb-12 sm:pb-16">
         <div className="max-w-[1200px] mx-auto">
           <div className="themenwelt-split">
             <div className="themenwelt-split-img">
@@ -329,8 +341,17 @@ export default function HomePage() {
       </section>
 
       {/* ─── NEWSLETTER ─── */}
-      <section className="px-5 sm:px-16 py-16 sm:py-20">
-        <div className="nl-gradient max-w-[1100px] mx-auto">
+      <section className="px-5 sm:px-16 py-12 sm:py-16">
+        <div className="text-center mb-10">
+          <div className="w-12 h-px bg-border mx-auto mb-5" />
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+            Newsletter
+          </p>
+          <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
+            <em className="italic text-amber">Immer</em> bestens informiert.
+          </h2>
+        </div>
+        <div className="nl-gradient max-w-[1200px] mx-auto">
           <div className="nl-inner">
             <div className="nl-left">
               <h2 className="font-display text-[28px] sm:text-[32px] font-medium text-white mb-3 leading-tight">
