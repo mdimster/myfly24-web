@@ -4,7 +4,6 @@ import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
 import { getAllArticles } from "./lib/articles";
 import { THEMENWELTEN } from "./lib/themenwelten";
-import InsuranceCalculator from "./components/InsuranceCalculator";
 
 export const dynamic = "force-dynamic";
 
@@ -289,17 +288,13 @@ export default function HomePage() {
               <p className="text-[15px] text-ink-muted leading-relaxed mb-6">
                 Welche Versicherung brauchst du wirklich? Unser Bedarfsrechner gibt dir in 30 Sekunden eine ehrliche Empfehlung.
               </p>
-              <a
-                href="#rechner"
+              <Link
+                href="/versicherung"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber text-white text-sm font-semibold no-underline hover:opacity-90 transition-opacity"
               >
-                → Zum Bedarfsrechner
-              </a>
+                → Zum Versicherungsvergleich
+              </Link>
             </div>
-          </div>
-
-          <div id="rechner" className="mt-10 max-w-[800px] mx-auto">
-            <InsuranceCalculator />
           </div>
         </div>
       </section>
