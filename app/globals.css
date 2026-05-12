@@ -620,6 +620,24 @@ body {
   .cookie-btn-decline, .cookie-btn-accept { flex: 1; }
 }
 
+/* ─── Themenwelt Cards ─── */
+.themenwelt-card {
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.themenwelt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(26, 40, 71, 0.1);
+}
+
+.themenwelt-card img {
+  display: block;
+  border-radius: 16px;
+}
+
 /* ─── Travel Banner ─── */
 .travel-banner-wrap {
   border-bottom: 1px solid var(--color-border, #E5E0D8);

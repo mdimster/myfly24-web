@@ -83,7 +83,7 @@ export function getPhase(userMessageCount: number): {
 
   if (userMessageCount === 3) {
     return {
-      model: "claude-sonnet-4-6",
+      model: "claude-sonnet-4-20250514",
       systemPrompt: ADVISOR_PROMPT,
       phase: "recommend",
     };
@@ -91,7 +91,7 @@ export function getPhase(userMessageCount: number): {
 
   // Follow-up Fragen nach der Empfehlung
   return {
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-4-20250514",
     systemPrompt: ADVISOR_PROMPT + "\n\nDer Nutzer hat eine Rückfrage zu deiner Empfehlung. Antworte hilfreich und konkret. Halte dich kurz (max 150 Wörter).",
     phase: "followup",
   };

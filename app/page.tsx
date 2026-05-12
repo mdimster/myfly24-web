@@ -3,6 +3,7 @@ import Link from "next/link";
 import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
 import { getAllArticles } from "./lib/articles";
+import { THEMENWELTEN } from "./lib/themenwelten";
 
 export const dynamic = "force-dynamic";
 
@@ -116,8 +117,8 @@ export default function HomePage() {
           <Link href="#magazin" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
             Magazin
           </Link>
-          <Link href="#reiseziele" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
-            Reiseziele
+          <Link href="#themenwelten" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors">
+            Themenwelten
           </Link>
           <Link href="#so-funktionierts" className="text-xs sm:text-sm font-medium text-ink-muted no-underline hover:text-navy transition-colors whitespace-nowrap">
             So geht&apos;s
@@ -232,38 +233,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── REISEZIELE ─── */}
-      <div id="reiseziele" className="text-center pt-12 sm:pt-16 px-5 sm:px-16">
+      {/* ─── THEMENWELTEN ─── */}
+      <div id="themenwelten" className="text-center pt-12 sm:pt-16 px-5 sm:px-16">
         <div className="w-12 h-px bg-border mx-auto mb-5" />
         <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
-          Reiseziele
+          Themenwelten
         </p>
         <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
-          <em className="italic text-amber">Wohin</em> soll&apos;s gehen?
+          <em className="italic text-amber">Alles</em> rund ums Reisen.
         </h2>
         <p className="text-base text-ink-muted mb-12 leading-relaxed">
-          Unsere beliebtesten Ziele – handverlesen, nicht algorithmisch.
+          Entdecke unsere Ratgeber – von Sicherheit bis Spar-Tipps.
         </p>
       </div>
 
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 max-w-[1200px] mx-auto">
-          {destinations.map((dest) => (
-            <div key={dest.name} className="dest-card">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-[1200px] mx-auto">
+          {THEMENWELTEN.map((tw) => (
+            <Link key={tw.slug} href={`/themenwelt/${tw.slug}`} className="themenwelt-card no-underline">
               <Image
-                src={dest.image}
-                alt={dest.name}
-                fill
-                sizes="(max-width: 1024px) 50vw, 25vw"
-                style={{ objectFit: "cover" }}
+                src={tw.image}
+                alt={tw.title}
+                width={1200}
+                height={800}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                style={{ width: "100%", height: "auto", borderRadius: "16px" }}
               />
-              <div className="dest-overlay">
-                <p className="font-display text-base sm:text-xl font-medium text-white mb-0.5">
-                  {dest.name}
-                </p>
-                <p className="text-[11px] sm:text-[13px] text-white/75 leading-snug">{dest.tagline}</p>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

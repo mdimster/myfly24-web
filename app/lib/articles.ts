@@ -70,18 +70,48 @@ export function deleteArticle(slug: string): boolean {
   return true;
 }
 
-// Verfügbare Bilder für Artikel
-export const ARTICLE_IMAGES = [
-  "/images/stone-village.jpg",
-  "/images/airplane-window.jpg",
-  "/images/family-coast.jpg",
-  "/images/coast-sunset.jpg",
-  "/images/alpine-lake.jpg",
-  "/images/turquoise-bay.jpg",
-  "/images/family-beach.jpg",
-  "/images/airport-terminal.jpg",
-  "/images/mountain-lake.jpg",
+// Bild-Zuordnung nach Kategorie
+export const CATEGORY_IMAGES: Record<string, string[]> = {
+  "Geheimtipps": ["/images/articles/tropical-boat.jpg", "/images/articles/convertible-coast.jpg"],
+  "Reiseziele": ["/images/articles/tropical-boat.jpg", "/images/articles/roadtrip-coast.jpg", "/images/articles/convertible-coast.jpg"],
+  "Richtig fliegen": ["/images/articles/airport-luggage.jpg", "/images/articles/couple-lounge.jpg"],
+  "Familienreisen": ["/images/articles/family-beach.jpg"],
+  "Sicherheit": ["/images/articles/creditcard-airport.jpg", "/images/articles/safety-hiker.jpg"],
+  "Spar-Strategien": ["/images/articles/couple-lounge.jpg", "/images/articles/banking-app.jpg"],
+  "Handgepäck": ["/images/articles/packing-checklist.jpg", "/images/articles/airport-luggage.jpg"],
+};
+
+const FALLBACK_IMAGES = [
+  "/images/articles/tropical-boat.jpg",
+  "/images/articles/airport-luggage.jpg",
+  "/images/articles/roadtrip-coast.jpg",
+  "/images/articles/convertible-coast.jpg",
+  "/images/articles/couple-lounge.jpg",
+  "/images/articles/creditcard-airport.jpg",
+  "/images/articles/family-beach.jpg",
+  "/images/articles/packing-checklist.jpg",
+  "/images/articles/contactless-pay.jpg",
+  "/images/articles/banking-app.jpg",
+  "/images/articles/safety-hiker.jpg",
 ];
+
+export function getImageForCategory(category: string, usedImages: string[] = []): string {
+  const pool = CATEGORY_IMAGES[category] || FALLBACK_IMAGES;
+  // Vermeide Duplikate
+  const available = pool.filter((img) => !usedImages.includes(img));
+  if (available.length > 0) {
+    return available[Math.floor(Math.random() * available.length)];
+  }
+  // Fallback: beliebiges ungenutztes Bild
+  const fallbackAvailable = FALLBACK_IMAGES.filter((img) => !usedImages.includes(img));
+  if (fallbackAvailable.length > 0) {
+    return fallbackAvailable[Math.floor(Math.random() * fallbackAvailable.length)];
+  }
+  return FALLBACK_IMAGES[Math.floor(Math.random() * FALLBACK_IMAGES.length)];
+}
+
+// Verfügbare Bilder für Artikel (Legacy-Kompatibilität)
+export const ARTICLE_IMAGES = FALLBACK_IMAGES;
 
 // Themen-Rotation für automatische Generierung
 export const TOPIC_POOL = [

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveArticle, ARTICLE_IMAGES, TOPIC_POOL, getAllArticles } from "@/app/lib/articles";
+import { saveArticle, ARTICLE_IMAGES, TOPIC_POOL, getAllArticles, getImageForCategory } from "@/app/lib/articles";
 
 const ADMIN_KEY = process.env.ADMIN_KEY || "myfly24-admin-2026";
 
@@ -44,8 +44,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Topic und Category erforderlich" }, { status: 400 });
     }
 
-    // Bild zufällig wählen (oder basierend auf Kategorie)
-    const image = ARTICLE_IMAGES[Math.floor(Math.random() * ARTICLE_IMAGES.length)];
+    // Bild basierend auf Kategorie wählen (vermeidet Duplikate)
+    const existingArticles = getAllArticles();
+    const usedImages = existingArticles.map((a) => a.image);
+    const image = getImageForCategory(category, usedImages);
 
     // Artikel generieren
     const response = await fetch("https://api.anthropic.com/v1/messages", {
