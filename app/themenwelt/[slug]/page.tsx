@@ -39,16 +39,38 @@ export default async function ThemenweltPage({
       </nav>
 
       <main className="mt-14 sm:mt-16">
-        {/* Hero: Großes Infografik-Bild */}
-        <div className="relative w-full" style={{ aspectRatio: "3/2", maxHeight: "70vh" }}>
-          <Image
-            src={themenwelt.image}
-            alt={themenwelt.title}
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-          />
+        {/* Hero: 60/40 Split */}
+        <div className="px-5 sm:px-16 pt-6 max-w-[1200px] mx-auto">
+          <div className="themenwelt-split">
+            <div className="themenwelt-split-img">
+              <Image
+                src={themenwelt.image}
+                alt={themenwelt.title}
+                width={1200}
+                height={800}
+                priority
+                sizes="(max-width: 768px) 100vw, 60vw"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </div>
+            <div className="themenwelt-split-text">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-amber font-semibold mb-3">
+                Themenwelt
+              </p>
+              <h1 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-navy mb-3 leading-tight">
+                {themenwelt.title}
+              </h1>
+              <p className="text-[15px] text-ink-muted leading-relaxed mb-6">
+                {themenwelt.subtitle}. Entdecke unsere Artikel, Tipps und Ratgeber zu diesem Thema.
+              </p>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber text-white text-sm font-semibold no-underline hover:opacity-90 transition-opacity"
+              >
+                ✨ Reiseberater starten
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Zugehörige Artikel */}
