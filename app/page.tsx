@@ -4,6 +4,7 @@ import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
 import { getAllArticles } from "./lib/articles";
 import { THEMENWELTEN } from "./lib/themenwelten";
+import InsuranceCalculator from "./components/InsuranceCalculator";
 
 export const dynamic = "force-dynamic";
 
@@ -249,7 +250,7 @@ export default function HomePage() {
 
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-[1200px] mx-auto">
-          {THEMENWELTEN.slice(0, 9).map((tw) => (
+          {THEMENWELTEN.slice(0, 6).map((tw) => (
             <Link key={tw.slug} href={`/themenwelt/${tw.slug}`} className="themenwelt-card no-underline">
               <Image
                 src={tw.image}
@@ -261,6 +262,45 @@ export default function HomePage() {
               />
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* ─── VERSICHERUNG ─── */}
+      <section className="px-5 sm:px-16 py-12 sm:py-16">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="themenwelt-split">
+            <div className="themenwelt-split-img">
+              <Image
+                src="/images/themenwelt/reiseversicherung.jpg"
+                alt="Reiseversicherungen im Vergleich"
+                width={1200}
+                height={800}
+                sizes="(max-width: 768px) 100vw, 60vw"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </div>
+            <div className="themenwelt-split-text">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-amber font-semibold mb-3">
+                Versicherungen
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl font-medium tracking-tight text-navy mb-3 leading-tight">
+                Reiseversicherungen im Vergleich
+              </h2>
+              <p className="text-[15px] text-ink-muted leading-relaxed mb-6">
+                Welche Versicherung brauchst du wirklich? Unser Bedarfsrechner gibt dir in 30 Sekunden eine ehrliche Empfehlung.
+              </p>
+              <a
+                href="#rechner"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber text-white text-sm font-semibold no-underline hover:opacity-90 transition-opacity"
+              >
+                → Zum Bedarfsrechner
+              </a>
+            </div>
+          </div>
+
+          <div id="rechner" className="mt-10 max-w-[800px] mx-auto">
+            <InsuranceCalculator />
+          </div>
         </div>
       </section>
 
