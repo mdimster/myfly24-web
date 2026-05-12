@@ -351,17 +351,14 @@ export default function HomePage() {
       {/* ─── FOOTER ─── */}
       <footer className="py-8 sm:py-10 px-5 sm:px-16 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
         <span className="text-[13px] text-ink-subtle">
-          © 2026 myFly24 · performance werk Media GmbH
+          © 2026 myFly24 · performance werk GmbH
         </span>
         <div className="flex gap-6">
-          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
+          <Link href="/impressum" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
             Impressum
           </Link>
-          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
+          <Link href="/datenschutz" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
             Datenschutz
-          </Link>
-          <Link href="#" className="text-[13px] text-ink-subtle no-underline hover:text-navy transition-colors">
-            AGB
           </Link>
         </div>
       </footer>

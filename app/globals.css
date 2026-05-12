@@ -510,6 +510,116 @@ body {
   cursor: not-allowed;
 }
 
+/* ─── Legal Prose ─── */
+.prose-legal {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-ink-muted, #6B6B6B);
+}
+
+.prose-legal p { margin-bottom: 16px; }
+.prose-legal strong { color: var(--color-navy, #1A2847); font-weight: 600; }
+
+.prose-legal h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--color-navy, #1A2847);
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+
+.prose-legal h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-navy, #1A2847);
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.prose-legal ul { margin: 12px 0; padding-left: 20px; }
+.prose-legal li { margin-bottom: 6px; }
+
+.prose-legal a {
+  color: var(--color-amber, #E89B3A);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ─── Cookie Banner ─── */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 300;
+  padding: 16px 20px;
+  background: rgba(26, 40, 71, 0.95);
+  backdrop-filter: blur(12px);
+  animation: cookieUp 0.4s ease;
+}
+
+@keyframes cookieUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.cookie-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cookie-banner-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.cookie-banner-text a {
+  color: var(--color-amber, #E89B3A);
+  text-decoration: underline;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.cookie-btn-decline {
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.cookie-btn-accept {
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: none;
+  background: var(--color-amber, #E89B3A);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .cookie-banner-inner { flex-direction: column; text-align: center; }
+  .cookie-banner-actions { width: 100%; }
+  .cookie-btn-decline, .cookie-btn-accept { flex: 1; }
+}
+
 /* ─── Travel Banner ─── */
 .travel-banner-wrap {
   border-bottom: 1px solid var(--color-border, #E5E0D8);

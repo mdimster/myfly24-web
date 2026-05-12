@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import CookieBanner from "./components/CookieBanner";
 
 export const metadata: Metadata = {
   title: "myFly24 – Dein KI-Reiseberater",
@@ -34,7 +35,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body>{children}</body>
+      <body>
+        {children}
+        <CookieBanner />
+      </body>
     </html>
   );
 }
