@@ -6,38 +6,103 @@ import { getArticleBySlug, getAllArticles } from "@/app/lib/articles";
 export const dynamic = "force-dynamic";
 
 function renderArticleMarkdown(content: string): string {
-  return content
-    .split("\n")
-    .map((line) => {
-      // H2: ## Heading
-      if (line.startsWith("## ")) {
-        return `<h2>${line.slice(3)}</h2>`;
+  const lines = content.split("\n");
+  const result: string[] = [];
+  let inTable = false;
+  let tableRows: string[][] = [];
+
+  function flushTable() {
+    if (tableRows.length < 2) return;
+    let html = '<table class="article-table"><thead><tr>';
+    tableRows[0].forEach((cell) => {
+      html += `<th>${cell.trim()}</th>`;
+    });
+    html += "</tr></thead><tbody>";
+    // Skip row 1 (separator ---) 
+    for (let i = 2; i < tableRows.length; i++) {
+      html += "<tr>";
+      tableRows[i].forEach((cell) => {
+        html += `<td>${cell.trim()}</td>`;
+      });
+      html += "</tr>";
+    }
+    html += "</tbody></table>";
+    result.push(html);
+    tableRows = [];
+    inTable = false;
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+
+    // Table detection: lines starting and ending with |
+    if (line.trim().startsWith("|") && line.trim().endsWith("|")) {
+      inTable = true;
+      const cells = line.split("|").filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+      // Skip separator rows (| --- | --- |)
+      if (cells.every((c) => c.trim().match(/^[-:]+$/))) {
+        tableRows.push(cells); // keep for structure
+      } else {
+        tableRows.push(cells);
       }
-      // H3: ### Heading
-      if (line.startsWith("### ")) {
-        return `<h3>${line.slice(4)}</h3>`;
-      }
-      // Bold
-      line = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-      // Italic
-      line = line.replace(/\*(.+?)\*/g, "<em>$1</em>");
-      // List items
-      if (line.match(/^[-–•]\s/)) {
-        return "<li>" + line.replace(/^[-–•]\s/, "") + "</li>";
-      }
-      // Numbered list
-      if (line.match(/^\d+\.\s/)) {
-        return "<li>" + line.replace(/^\d+\.\s/, "") + "</li>";
-      }
-      // Empty line = paragraph break
-      if (line.trim() === "") return "<br />";
-      // Regular paragraph
-      return `<p>${line}</p>`;
-    })
+      continue;
+    }
+
+    // End of table
+    if (inTable) {
+      flushTable();
+    }
+
+    // H2
+    if (line.startsWith("## ")) {
+      result.push(`<h2>${line.slice(3)}</h2>`);
+      continue;
+    }
+    // H3
+    if (line.startsWith("### ")) {
+      result.push(`<h3>${line.slice(4)}</h3>`);
+      continue;
+    }
+    // Bold
+    line = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    // Italic (but not inside bold)
+    line = line.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, "<em>$1</em>");
+    // Links [text](url)
+    line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    // Horizontal rule
+    if (line.trim() === "---") {
+      result.push("<hr />");
+      continue;
+    }
+    // List items
+    if (line.match(/^[-–•]\s/)) {
+      result.push("<li>" + line.replace(/^[-–•]\s/, "") + "</li>");
+      continue;
+    }
+    // Numbered list
+    if (line.match(/^\d+\.\s/)) {
+      result.push("<li>" + line.replace(/^\d+\.\s/, "") + "</li>");
+      continue;
+    }
+    // Empty line
+    if (line.trim() === "") {
+      result.push("");
+      continue;
+    }
+    // Regular paragraph
+    result.push(`<p>${line}</p>`);
+  }
+
+  // Flush any remaining table
+  if (inTable) flushTable();
+
+  return result
     .join("\n")
     .replace(/(<li>.*?<\/li>\n?)+/g, (match) =>
-      "<ul>" + match.replace(/<br \/>/g, "") + "</ul>"
-    );
+      "<ul>" + match + "</ul>"
+    )
+    // Remove excessive <br> between paragraphs
+    .replace(/(<\/p>\n?){2,}/g, "</p>\n");
 }
 
 export default async function ArticlePage({
