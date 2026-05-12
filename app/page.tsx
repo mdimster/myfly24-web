@@ -249,7 +249,7 @@ export default function HomePage() {
 
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-[1200px] mx-auto">
-          {THEMENWELTEN.map((tw) => (
+          {THEMENWELTEN.slice(0, 6).map((tw) => (
             <Link key={tw.slug} href={`/themenwelt/${tw.slug}`} className="themenwelt-card no-underline">
               <Image
                 src={tw.image}

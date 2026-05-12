@@ -93,6 +93,7 @@ const FALLBACK_IMAGES = [
   "/images/articles/contactless-pay.jpg",
   "/images/articles/banking-app.jpg",
   "/images/articles/safety-hiker.jpg",
+  "/images/themenwelt/packtipps.jpg",
 ];
 
 export function getImageForCategory(category: string, usedImages: string[] = []): string {
