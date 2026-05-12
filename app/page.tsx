@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
+import { getAllArticles } from "./lib/articles";
+
+export const dynamic = "force-dynamic";
 
 /* ─── SVG Icon Components ─── */
 
@@ -42,32 +45,7 @@ function HeartIcon() {
 
 /* ─── Data ─── */
 
-const magazineArticles = [
-  {
-    slug: "schoenheit-suedeuropas",
-    image: "/images/stone-village.jpg",
-    tag: "Geheimtipps",
-    title: "Die unerwartete Schönheit Südeuropas",
-    excerpt:
-      "Abseits der Touristenströme warten Dörfer, die sich anfühlen wie eine Zeitreise.",
-  },
-  {
-    slug: "business-class-guenstig",
-    image: "/images/airplane-window.jpg",
-    tag: "Richtig fliegen",
-    title: "Business Class unter 800\u202F€? So geht\u2019s.",
-    excerpt:
-      "Die besten Strategien für Premium-Flüge zum Bruchteil des regulären Preises.",
-  },
-  {
-    slug: "mit-kindern-reisen",
-    image: "/images/family-coast.jpg",
-    tag: "Familienreisen",
-    title: "Mit Kindern reisen, ohne den Verstand zu verlieren",
-    excerpt:
-      "Fünf Familien verraten, warum ihre besten Urlaube die ungeplanten waren.",
-  },
-];
+/* ─── Data ─── */
 
 const destinations = [
   {
@@ -118,6 +96,8 @@ const trustItems = [
 /* ─── Page ─── */
 
 export default function HomePage() {
+  const latestArticles = getAllArticles().slice(0, 3);
+
   return (
     <>
       {/* ─── NAV ─── */}
@@ -217,8 +197,8 @@ export default function HomePage() {
 
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-[1200px] mx-auto">
-          {magazineArticles.map((article) => (
-            <Link key={article.slug} href="/magazin" className="magazine-card no-underline">
+          {latestArticles.map((article) => (
+            <Link key={article.slug} href={`/magazin/${article.slug}`} className="magazine-card no-underline">
               <div className="relative h-[180px] sm:h-[220px]">
                 <Image
                   src={article.image}
@@ -230,7 +210,7 @@ export default function HomePage() {
               </div>
               <div className="p-5 pb-6">
                 <p className="text-[11px] uppercase tracking-[0.14em] text-amber font-semibold mb-2">
-                  {article.tag}
+                  {article.category}
                 </p>
                 <h3 className="font-display text-xl font-medium leading-snug text-navy mb-2.5">
                   {article.title}
