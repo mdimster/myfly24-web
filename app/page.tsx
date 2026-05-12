@@ -218,7 +218,7 @@ export default function HomePage() {
       <section className="px-5 sm:px-16 pb-16 sm:pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-[1200px] mx-auto">
           {magazineArticles.map((article) => (
-            <article key={article.slug} className="magazine-card">
+            <Link key={article.slug} href="/magazin" className="magazine-card no-underline">
               <div className="relative h-[180px] sm:h-[220px]">
                 <Image
                   src={article.image}
@@ -239,8 +239,16 @@ export default function HomePage() {
                   {article.excerpt}
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link
+            href="/magazin"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-sm font-medium text-navy no-underline hover:bg-white transition-colors"
+          >
+            Alle Artikel ansehen →
+          </Link>
         </div>
       </section>
 
