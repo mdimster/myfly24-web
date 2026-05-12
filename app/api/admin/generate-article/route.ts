@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveArticle, ARTICLE_IMAGES, TOPIC_POOL, getAllArticles, getImageForCategory } from "@/app/lib/articles";
+import { saveArticle, ARTICLE_IMAGES, TOPIC_POOL, getAllArticles, getImageForCategory, getSmartImageForArticle } from "@/app/lib/articles";
 
 const ADMIN_KEY = process.env.ADMIN_KEY || "myfly24-admin-2026";
 
@@ -44,11 +44,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Topic und Category erforderlich" }, { status: 400 });
     }
 
-    // Bild basierend auf Kategorie wählen (vermeidet Duplikate)
-    const existingArticles = getAllArticles();
-    const usedImages = existingArticles.map((a) => a.image);
-    const image = getImageForCategory(category, usedImages);
-
     // Artikel generieren
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -86,6 +81,16 @@ export async function POST(req: NextRequest) {
     const cleaned = rawText.replace(/```json\n?|```\n?/g, "").trim();
     const articleData = JSON.parse(cleaned);
 
+    // KI-Bildauswahl: Haiku matcht Titel+Excerpt gegen Bilder-Pool
+    const existingArticles = getAllArticles();
+    const usedImages = existingArticles.map((a) => a.image);
+    const image = await getSmartImageForArticle(
+      articleData.title,
+      articleData.excerpt,
+      category,
+      usedImages
+    );
+
     // Slug generieren
     const slug = articleData.title
       .toLowerCase()
@@ -106,6 +111,7 @@ export async function POST(req: NextRequest) {
       image,
       publishedAt: new Date().toISOString().split("T")[0],
       readingTime: articleData.readingTime || 5,
+      type: "magazine" as const,
     };
 
     // Speichern
@@ -113,7 +119,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      article: { slug: article.slug, title: article.title },
+      article: { slug: article.slug, title: article.title, image: article.image },
       usage: {
         input: data.usage?.input_tokens,
         output: data.usage?.output_tokens,
