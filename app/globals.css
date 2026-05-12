@@ -620,6 +620,46 @@ body {
   .cookie-btn-decline, .cookie-btn-accept { flex: 1; }
 }
 
+/* ─── Themenwelt Split ─── */
+.themenwelt-split {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #E5E0D8);
+  background: white;
+  min-height: 380px;
+}
+
+.themenwelt-split-img {
+  overflow: hidden;
+}
+
+.themenwelt-split-img img {
+  display: block;
+}
+
+.themenwelt-split-text {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .themenwelt-split {
+    grid-template-columns: 1fr;
+  }
+
+  .themenwelt-split-img {
+    max-height: 250px;
+  }
+
+  .themenwelt-split-text {
+    padding: 24px 20px;
+  }
+}
+
 /* ─── Themenwelt Cards ─── */
 .themenwelt-card {
   display: block;
