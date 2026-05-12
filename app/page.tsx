@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
-import { getAllArticles } from "./lib/articles";
+import { getMagazineArticles } from "./lib/articles";
 import { THEMENWELTEN } from "./lib/themenwelten";
 
 export const dynamic = "force-dynamic";
@@ -97,7 +97,7 @@ const trustItems = [
 /* ─── Page ─── */
 
 export default function HomePage() {
-  const latestArticles = getAllArticles().slice(0, 3);
+  const latestArticles = getMagazineArticles().slice(0, 3);
 
   return (
     <>

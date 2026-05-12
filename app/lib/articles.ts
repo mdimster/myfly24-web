@@ -10,6 +10,7 @@ export interface Article {
   image: string;
   publishedAt: string;
   readingTime: number;
+  type?: "magazine" | "themenwelt";
 }
 
 // Artikel-Verzeichnis: shared überlebt Deploys
@@ -54,6 +55,14 @@ export function getArticleBySlug(slug: string): Article | null {
   } catch {
     return null;
   }
+}
+
+export function getMagazineArticles(): Article[] {
+  return getAllArticles().filter((a) => a.type !== "themenwelt");
+}
+
+export function getThemenweltArticles(): Article[] {
+  return getAllArticles().filter((a) => a.type === "themenwelt");
 }
 
 export function saveArticle(article: Article): void {

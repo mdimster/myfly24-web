@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getAllArticles } from "@/app/lib/articles";
+import { getMagazineArticles } from "@/app/lib/articles";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function MagazinPage() {
-  const articles = getAllArticles();
+  const articles = getMagazineArticles();
 
   return (
     <>
