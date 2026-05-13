@@ -4,6 +4,7 @@ import ChatSection from "./components/ChatSection";
 import TravelBanner from "./components/TravelBanner";
 import { getMagazineArticles } from "./lib/articles";
 import { THEMENWELTEN } from "./lib/themenwelten";
+import Check24Widget from "./components/Check24Widget";
 
 export const dynamic = "force-dynamic";
 
@@ -337,6 +338,25 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── PAUSCHALREISE (CHECK24) ─── */}
+      <section className="px-5 sm:px-16 pb-12 sm:pb-16">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-10">
+            <div className="w-12 h-px bg-border mx-auto mb-5" />
+            <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-semibold mb-2.5">
+              Pauschalreisen
+            </p>
+            <h2 className="font-display text-4xl font-medium tracking-tight text-navy mb-2">
+              <em className="italic text-amber">Jetzt</em> Pauschalreise finden.
+            </h2>
+            <p className="text-base text-ink-muted mb-8 leading-relaxed">
+              Vergleiche tausende Angebote und finde deinen Traumurlaub zum besten Preis.
+            </p>
+          </div>
+          <Check24Widget />
         </div>
       </section>
 
