@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+const TARIFCHECK_DEEPLINK =
+  "https://www.awin1.com/cread.php?awinmid=11202&awinaffid=396279&ued=https%3A%2F%2Fwww.tarifcheck.de%2Freiseversicherung%2F";
+
 interface Result {
   recommendation: string;
   products: { name: string; reason: string; priceRange: string; priority: "must" | "recommended" | "optional" }[];
@@ -170,6 +173,24 @@ export default function InsuranceCalculator() {
                 <p>{p.reason}</p>
               </div>
             ))}
+          </div>
+
+          {/* Affiliate CTA */}
+          <div className="insurance-cta">
+            <p className="insurance-cta-text">
+              Finde jetzt den passenden Tarif – unabhängig verglichen bei Tarifcheck:
+            </p>
+            <a
+              href={TARIFCHECK_DEEPLINK}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="insurance-cta-btn"
+            >
+              Reiseversicherungen vergleichen →
+            </a>
+            <p className="insurance-cta-note">
+              * Wir erhalten eine kleine Provision bei Abschluss. Für dich entstehen keine Mehrkosten.
+            </p>
           </div>
         </div>
       )}
