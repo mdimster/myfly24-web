@@ -1216,3 +1216,211 @@ body {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* ─── Versicherung Wizard ─── */
+.wizard-wrap {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.wizard-progress {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+.wizard-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: all 0.3s ease;
+}
+.wizard-dot.done { background: var(--color-navy); }
+.wizard-dot.current { background: var(--color-amber); transform: scale(1.25); }
+.wizard-question {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-navy);
+  margin-bottom: 4px;
+}
+.wizard-subtitle {
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  margin-bottom: 1.25rem;
+}
+.wizard-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wizard-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  font-family: var(--font-body);
+}
+.wizard-option:hover {
+  border-color: var(--color-navy-light);
+  background: rgba(26, 40, 71, 0.02);
+}
+.wizard-option.selected {
+  border-color: var(--color-navy);
+  background: rgba(26, 40, 71, 0.04);
+}
+.wizard-option-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.wizard-option-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+.wizard-option-sub {
+  font-size: 12px;
+  color: var(--color-ink-muted);
+  margin-top: 1px;
+}
+.wizard-back {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: color 0.15s;
+}
+.wizard-back:hover { color: var(--color-navy); }
+
+/* Result */
+.wizard-result { margin-top: 0.5rem; }
+.wizard-result-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+.wizard-result-total {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--color-amber);
+}
+.wizard-result-label {
+  font-size: 12px;
+  color: var(--color-ink-subtle);
+}
+.wizard-result-tip {
+  font-size: 14px;
+  color: var(--color-ink-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.wizard-result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.wizard-product {
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: white;
+}
+.wizard-product-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.wizard-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+.badge-must { background: rgba(26, 40, 71, 0.08); color: var(--color-navy); }
+.badge-rec { background: rgba(232, 155, 58, 0.12); color: #9A6B1A; }
+.badge-opt { background: var(--color-cream); color: var(--color-ink-muted); }
+.wizard-product-price {
+  font-size: 12px;
+  color: var(--color-ink-subtle);
+}
+.wizard-product-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin-bottom: 3px;
+}
+.wizard-product-reason {
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  line-height: 1.45;
+}
+
+/* Affiliate CTA */
+.wizard-cta {
+  margin-top: 20px;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+  border-radius: 16px;
+  text-align: center;
+}
+.wizard-cta-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+.wizard-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--color-amber);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.wizard-cta-btn:hover { opacity: 0.9; }
+.wizard-cta-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Reset Button */
+.wizard-reset {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.wizard-reset:hover {
+  border-color: var(--color-navy-light);
+  color: var(--color-navy);
+}

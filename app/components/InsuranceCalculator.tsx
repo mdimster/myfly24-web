@@ -5,38 +5,44 @@ import { useState } from "react";
 const TARIFCHECK_DEEPLINK =
   "https://www.awin1.com/cread.php?awinmid=11202&awinaffid=396279&ued=https%3A%2F%2Fwww.tarifcheck.de%2Freiseversicherung%2F";
 
+interface Product {
+  name: string;
+  reason: string;
+  priceRange: string;
+  priority: "must" | "recommended" | "optional";
+}
+
 interface Result {
   recommendation: string;
-  products: { name: string; reason: string; priceRange: string; priority: "must" | "recommended" | "optional" }[];
+  products: Product[];
   totalRange: string;
 }
 
 function calculate(region: string, duration: string, travelers: string): Result {
-  const products: Result["products"] = [];
+  const products: Product[] = [];
 
-  // Auslandskrankenversicherung - immer empfohlen
   products.push({
     name: "Auslandskrankenversicherung",
-    reason: region === "worldwide"
-      ? "Außerhalb der EU ist ein Krankenrücktransport ohne Versicherung extrem teuer (ab 30.000 €)."
-      : "Auch in Europa können Behandlungskosten anfallen, die die Krankenkasse nicht übernimmt.",
+    reason:
+      region === "worldwide"
+        ? "Außerhalb der EU ist ein Krankenrücktransport ohne Versicherung extrem teuer (ab 30.000 €)."
+        : "Auch in Europa können Behandlungskosten anfallen, die die Krankenkasse nicht übernimmt.",
     priceRange: duration === "annual" ? "12–25 € / Jahr" : "1–3 € / Tag",
     priority: "must",
   });
 
-  // Reiserücktrittsversicherung
   if (duration !== "short" || travelers === "family") {
     products.push({
       name: "Reiserücktrittsversicherung",
-      reason: travelers === "family"
-        ? "Mit Kindern steigt das Risiko für kurzfristige Erkrankungen. Schützt die Anzahlung."
-        : "Bei längeren Reisen oder teuren Buchungen lohnt sich der Stornoschutz.",
+      reason:
+        travelers === "family"
+          ? "Mit Kindern steigt das Risiko für kurzfristige Erkrankungen. Schützt die Anzahlung."
+          : "Bei längeren Reisen oder teuren Buchungen lohnt sich der Stornoschutz.",
       priceRange: "3–5 % des Reisepreises",
       priority: duration === "long" || travelers === "family" ? "must" : "recommended",
     });
   }
 
-  // Reiseabbruchversicherung
   if (duration === "long") {
     products.push({
       name: "Reiseabbruchversicherung",
@@ -46,7 +52,6 @@ function calculate(region: string, duration: string, travelers: string): Result 
     });
   }
 
-  // Gepäckversicherung
   if (region === "worldwide") {
     products.push({
       name: "Gepäckversicherung",
@@ -56,142 +61,198 @@ function calculate(region: string, duration: string, travelers: string): Result 
     });
   }
 
-  // Jahresvertrag-Hinweis
-  const recommendation = duration === "annual"
-    ? "Ein Jahresvertrag lohnt sich ab 2 Reisen pro Jahr und ist deutlich günstiger als Einzelpolicen."
-    : travelers === "family"
-    ? "Familientarife sind günstiger als Einzelversicherungen – achte auf Kombi-Pakete."
-    : "Für deine Reise reicht eine Einzelpolice. Vergleiche vor Abschluss 2-3 Anbieter.";
+  const recommendation =
+    duration === "annual"
+      ? "Ein Jahresvertrag lohnt sich ab 2 Reisen pro Jahr und ist deutlich günstiger als Einzelpolicen."
+      : travelers === "family"
+      ? "Familientarife sind günstiger als Einzelversicherungen – achte auf Kombi-Pakete."
+      : "Für deine Reise reicht eine Einzelpolice. Vergleiche vor Abschluss 2-3 Anbieter.";
 
-  const totalRange = duration === "annual"
-    ? "ca. 30–90 € / Jahr"
-    : duration === "long"
-    ? "ca. 80–200 € je nach Reisepreis"
-    : "ca. 15–50 € für die Reise";
+  const totalRange =
+    duration === "annual"
+      ? "ca. 30–90 € / Jahr"
+      : duration === "long"
+      ? "ca. 80–200 € je nach Reisepreis"
+      : "ca. 15–50 € für die Reise";
 
   return { recommendation, products, totalRange };
 }
 
+const STEPS = [
+  {
+    question: "Wohin geht die Reise?",
+    subtitle: "Das bestimmt den Versicherungsumfang",
+    key: "region" as const,
+    options: [
+      { value: "europe", label: "Europa", sub: "EU + Schengen", icon: "🇪🇺" },
+      { value: "worldwide", label: "Weltweit", sub: "Fernreise, USA, Asien", icon: "🌍" },
+    ],
+  },
+  {
+    question: "Wie lange bist du unterwegs?",
+    subtitle: "Beeinflusst Tarif und Empfehlung",
+    key: "duration" as const,
+    options: [
+      { value: "short", label: "1–7 Tage", sub: "Kurztrip", icon: "⚡" },
+      { value: "long", label: "8–30 Tage", sub: "Längere Reise", icon: "📅" },
+      { value: "annual", label: "Jahresschutz", sub: "Mehrere Reisen", icon: "🔄" },
+    ],
+  },
+  {
+    question: "Wer reist mit?",
+    subtitle: "Familientarife sind oft günstiger",
+    key: "travelers" as const,
+    options: [
+      { value: "solo", label: "Allein", sub: "", icon: "👤" },
+      { value: "couple", label: "Zu zweit", sub: "", icon: "👫" },
+      { value: "family", label: "Familie", sub: "", icon: "👨‍👩‍👧" },
+    ],
+  },
+];
+
 export default function InsuranceCalculator() {
-  const [region, setRegion] = useState("");
-  const [duration, setDuration] = useState("");
-  const [travelers, setTravelers] = useState("");
+  const [step, setStep] = useState(0);
+  const [values, setValues] = useState<Record<string, string>>({});
   const [result, setResult] = useState<Result | null>(null);
 
-  const canCalculate = region && duration && travelers;
+  const handlePick = (key: string, value: string) => {
+    const next = { ...values, [key]: value };
+    setValues(next);
 
-  const handleCalculate = () => {
-    if (canCalculate) {
-      setResult(calculate(region, duration, travelers));
+    setTimeout(() => {
+      if (step < 2) {
+        setStep(step + 1);
+      } else {
+        setResult(calculate(next.region, next.duration, next.travelers));
+        setStep(3);
+      }
+    }, 250);
+  };
+
+  const handleBack = () => {
+    if (step > 0 && step < 3) {
+      setStep(step - 1);
     }
   };
 
+  const handleReset = () => {
+    setStep(0);
+    setValues({});
+    setResult(null);
+  };
+
   return (
-    <div className="insurance-calc">
-      <h3 className="font-display text-xl sm:text-2xl font-medium text-navy mb-2">
+    <div className="wizard-wrap">
+      {/* Progress Dots */}
+      <div className="wizard-progress">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className={`wizard-dot ${
+              i < step || result ? "done" : i === step && !result ? "current" : ""
+            }`}
+          />
+        ))}
+      </div>
+
+      <h3 className="font-display text-xl sm:text-2xl font-medium text-navy mb-1">
         Welche Versicherung brauchst du?
       </h3>
       <p className="text-sm text-ink-muted mb-6">
-        Beantworte drei Fragen – du bekommst eine persönliche Empfehlung.
+        Drei Fragen – eine persönliche Empfehlung.
       </p>
 
-      <div className="insurance-calc-grid">
-        {/* Region */}
-        <div className="insurance-calc-field">
-          <label>Wohin geht die Reise?</label>
-          <div className="insurance-calc-options">
-            <button className={`insurance-opt ${region === "europe" ? "active" : ""}`} onClick={() => setRegion("europe")}>
-              🇪🇺 Europa
-            </button>
-            <button className={`insurance-opt ${region === "worldwide" ? "active" : ""}`} onClick={() => setRegion("worldwide")}>
-              🌍 Weltweit
-            </button>
-          </div>
-        </div>
-
-        {/* Dauer */}
-        <div className="insurance-calc-field">
-          <label>Wie lange?</label>
-          <div className="insurance-calc-options">
-            <button className={`insurance-opt ${duration === "short" ? "active" : ""}`} onClick={() => setDuration("short")}>
-              1–7 Tage
-            </button>
-            <button className={`insurance-opt ${duration === "long" ? "active" : ""}`} onClick={() => setDuration("long")}>
-              8–30 Tage
-            </button>
-            <button className={`insurance-opt ${duration === "annual" ? "active" : ""}`} onClick={() => setDuration("annual")}>
-              Jahresschutz
-            </button>
-          </div>
-        </div>
-
-        {/* Reisende */}
-        <div className="insurance-calc-field">
-          <label>Wer reist mit?</label>
-          <div className="insurance-calc-options">
-            <button className={`insurance-opt ${travelers === "solo" ? "active" : ""}`} onClick={() => setTravelers("solo")}>
-              👤 Allein
-            </button>
-            <button className={`insurance-opt ${travelers === "couple" ? "active" : ""}`} onClick={() => setTravelers("couple")}>
-              👫 Zu zweit
-            </button>
-            <button className={`insurance-opt ${travelers === "family" ? "active" : ""}`} onClick={() => setTravelers("family")}>
-              👨‍👩‍👧 Familie
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <button
-        className="insurance-calc-btn"
-        onClick={handleCalculate}
-        disabled={!canCalculate}
-      >
-        Empfehlung berechnen
-      </button>
-
-      {/* Ergebnis */}
-      {result && (
-        <div className="insurance-result">
-          <div className="insurance-result-header">
-            <span className="insurance-result-total">{result.totalRange}</span>
-            <span className="insurance-result-label">geschätzte Kosten</span>
-          </div>
-
-          <p className="insurance-result-tip">{result.recommendation}</p>
-
-          <div className="insurance-result-list">
-            {result.products.map((p) => (
-              <div key={p.name} className={`insurance-product ${p.priority}`}>
-                <div className="insurance-product-header">
-                  <span className="insurance-product-badge">
-                    {p.priority === "must" ? "✅ Pflicht" : p.priority === "recommended" ? "👍 Empfohlen" : "💡 Optional"}
-                  </span>
-                  <span className="insurance-product-price">{p.priceRange}</span>
+      {/* Steps */}
+      {!result && step < 3 && (
+        <div className="wizard-step">
+          <div className="wizard-question">{STEPS[step].question}</div>
+          <div className="wizard-subtitle">{STEPS[step].subtitle}</div>
+          <div className="wizard-options">
+            {STEPS[step].options.map((opt) => (
+              <button
+                key={opt.value}
+                className={`wizard-option ${
+                  values[STEPS[step].key] === opt.value ? "selected" : ""
+                }`}
+                onClick={() => handlePick(STEPS[step].key, opt.value)}
+              >
+                <span className="wizard-option-icon">{opt.icon}</span>
+                <div>
+                  <div className="wizard-option-label">{opt.label}</div>
+                  {opt.sub && (
+                    <div className="wizard-option-sub">{opt.sub}</div>
+                  )}
                 </div>
-                <h4>{p.name}</h4>
-                <p>{p.reason}</p>
+              </button>
+            ))}
+          </div>
+
+          {step > 0 && (
+            <button className="wizard-back" onClick={handleBack}>
+              ← Zurück
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Result */}
+      {result && (
+        <div className="wizard-result">
+          <div className="wizard-result-header">
+            <span className="wizard-result-total">{result.totalRange}</span>
+            <span className="wizard-result-label">geschätzte Kosten</span>
+          </div>
+
+          <p className="wizard-result-tip">{result.recommendation}</p>
+
+          <div className="wizard-result-list">
+            {result.products.map((p) => (
+              <div key={p.name} className="wizard-product">
+                <div className="wizard-product-top">
+                  <span
+                    className={`wizard-badge ${
+                      p.priority === "must"
+                        ? "badge-must"
+                        : p.priority === "recommended"
+                        ? "badge-rec"
+                        : "badge-opt"
+                    }`}
+                  >
+                    {p.priority === "must"
+                      ? "Pflicht"
+                      : p.priority === "recommended"
+                      ? "Empfohlen"
+                      : "Optional"}
+                  </span>
+                  <span className="wizard-product-price">{p.priceRange}</span>
+                </div>
+                <h4 className="wizard-product-name">{p.name}</h4>
+                <p className="wizard-product-reason">{p.reason}</p>
               </div>
             ))}
           </div>
 
           {/* Affiliate CTA */}
-          <div className="insurance-cta">
-            <p className="insurance-cta-text">
-              Finde jetzt den passenden Tarif – unabhängig verglichen bei Tarifcheck:
+          <div className="wizard-cta">
+            <p className="wizard-cta-text">
+              Finde jetzt den passenden Tarif – unabhängig verglichen:
             </p>
             <a
               href={TARIFCHECK_DEEPLINK}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="insurance-cta-btn"
+              className="wizard-cta-btn"
             >
               Reiseversicherungen vergleichen →
             </a>
-            <p className="insurance-cta-note">
+            <p className="wizard-cta-note">
               * Wir erhalten eine kleine Provision bei Abschluss. Für dich entstehen keine Mehrkosten.
             </p>
           </div>
+
+          <button className="wizard-reset" onClick={handleReset}>
+            Neue Berechnung starten
+          </button>
         </div>
       )}
     </div>
