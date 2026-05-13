@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Script from "next/script";
 import CookieBanner from "./components/CookieBanner";
 
 export const metadata: Metadata = {
@@ -38,6 +39,12 @@ export default function RootLayout({
       <body>
         {children}
         <CookieBanner />
+        <Script
+          defer
+          data-domain="beta.myfly24.com"
+          src="https://analytics.preissturz.com/js/script.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
