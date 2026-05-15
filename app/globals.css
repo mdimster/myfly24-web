@@ -1619,3 +1619,6 @@ body {
 /* Fix: Trust-Strip hinter Expanded-Chat */
 .chat-backdrop { z-index: 200; }
 .chat-inline.chat-expanded { z-index: 201; }
+
+/* Fix: Chat über Trust-Strip */
+.chat-inline { position: relative; z-index: 10; }
