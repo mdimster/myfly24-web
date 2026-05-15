@@ -225,13 +225,15 @@ export default function ChatSection() {
 
             {error && !limitReached && <div className="chat-error">{error}</div>}
 
-            {/* Reise-Checkliste – bleibt sichtbar sobald einmal aktiviert */}
-            {showChecklist && (
-              <TravelChecklist messages={messages.map((m) => m.content)} />
-            )}
-
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Reise-Checkliste – außerhalb des Scroll-Bereichs */}
+          {showChecklist && (
+            <div style={{padding: "0 12px 12px"}}>
+              <TravelChecklist messages={messages.map((m) => m.content)} />
+            </div>
+          )}
 
           {!limitReached && (
             <div className="chat-input-row">
