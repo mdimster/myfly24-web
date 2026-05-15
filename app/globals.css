@@ -1622,3 +1622,8 @@ body {
 
 /* Fix: Chat über Trust-Strip */
 .chat-inline { position: relative; z-index: 10; }
+
+/* Trust-Strip verstecken wenn Chat aktiv */
+.hero:has(.chat-inline) .trust-strip {
+  display: none;
+}
