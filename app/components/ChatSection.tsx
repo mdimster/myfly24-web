@@ -227,7 +227,7 @@ export default function ChatSection() {
 
             {/* Reise-Checkliste – bleibt sichtbar sobald einmal aktiviert */}
             {showChecklist && (
-              <TravelChecklist messages={messages.map((m) => m.content)} />
+              <div style={{padding:"20px",background:"red",color:"white",borderRadius:"12px"}}>CHECKLISTE HIER</div>
             )}
 
             <div ref={messagesEndRef} />
