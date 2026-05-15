@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import TravelChecklist from "./TravelChecklist";
 
 interface Message {
   role: "user" | "assistant";
@@ -100,6 +101,8 @@ export default function ChatSection() {
   };
 
   const userCount = messages.filter((m) => m.role === "user").length;
+  const lastMessage = messages[messages.length - 1];
+  const showChecklist = userCount >= 3 && !isLoading && lastMessage?.role === "assistant";
 
   // ─── Active: Inline Chat ───
   if (isActive) {
@@ -146,6 +149,14 @@ export default function ChatSection() {
             </div>
           )}
           {error && <div className="chat-error">{error}</div>}
+
+          {/* Reise-Checkliste nach Empfehlung */}
+          {showChecklist && (
+            <TravelChecklist
+              messages={messages.map((m) => m.content)}
+            />
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
