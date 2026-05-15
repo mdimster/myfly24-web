@@ -1519,3 +1519,99 @@ body {
   color: var(--color-ink-subtle);
   line-height: 1.4;
 }
+
+/* ─── Chat Expand Button ─── */
+.chat-expand-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-ink-subtle);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chat-expand-btn:hover {
+  background: rgba(26, 40, 71, 0.06);
+  color: var(--color-navy);
+}
+
+/* ─── Chat Expanded Mode ─── */
+.chat-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 40, 71, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.chat-inline.chat-expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  max-width: 720px;
+  width: 90vw;
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgba(26, 40, 71, 0.2);
+  background: rgba(255, 255, 255, 0.97);
+  animation: expandIn 0.25s ease;
+}
+@keyframes expandIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+.chat-inline.chat-expanded .chat-inline-messages {
+  max-height: 55vh;
+}
+
+/* ─── Sanftes Rate Limit ─── */
+.chat-rate-limit {
+  padding: 16px;
+  background: var(--color-cream);
+  border-radius: 14px;
+  text-align: center;
+}
+.chat-rate-limit-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.chat-rate-limit-text strong {
+  display: block;
+  font-size: 14px;
+  color: var(--color-navy);
+  margin-bottom: 4px;
+}
+.chat-rate-limit-text p {
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  margin-bottom: 12px;
+}
+.chat-rate-limit-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.chat-rate-limit-links a {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-navy);
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.chat-rate-limit-links a:hover {
+  border-color: var(--color-navy-light);
+  background: rgba(26, 40, 71, 0.02);
+}
