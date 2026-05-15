@@ -20,12 +20,12 @@ export default function ChatSection() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isRateLimited, setIsRateLimited] = useState(false);
+  const [limitReached, setLimitReached] = useState<"rate" | "message" | null>(null);
+  const [checklistVisible, setChecklistVisible] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Simple Markdown → HTML
   function renderMarkdown(text: string) {
     return text
       .split("\n")
@@ -59,7 +59,22 @@ export default function ChatSection() {
     }
   }, [messages, isActive]);
 
-  // ESC schließt den Expanded-Modus
+  // Checkliste einmalig aktivieren wenn Empfehlung da ist
+  const userCount = messages.filter((m) => m.role === "user").length;
+  useEffect(() => {
+    if (
+      !checklistVisible &&
+      userCount >= 3 &&
+      !isLoading &&
+      messages.length > 0 &&
+      messages[messages.length - 1]?.role === "assistant" &&
+      messages.filter((m) => m.role === "assistant").length >= 4 // Greeting + 3 Fragen + Empfehlung = min 4 assistant msgs
+    ) {
+      setChecklistVisible(true);
+    }
+  }, [messages, isLoading, userCount, checklistVisible]);
+
+  // ESC schließt Expanded-Modus
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isExpanded) setIsExpanded(false);
@@ -88,7 +103,9 @@ export default function ChatSection() {
       const data = await response.json();
       if (!response.ok) {
         if (data.type === "rate_limit") {
-          setIsRateLimited(true);
+          setLimitReached("rate");
+        } else if (data.type === "message_limit") {
+          setLimitReached("message");
         } else {
           setError(data.error || "Etwas ist schiefgelaufen.");
         }
@@ -108,15 +125,18 @@ export default function ChatSection() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
-  const userCount = messages.filter((m) => m.role === "user").length;
-  const lastMessage = messages[messages.length - 1];
-  const showChecklist = userCount >= 3 && !isLoading && lastMessage?.role === "assistant";
+  const handleNewChat = () => {
+    setMessages([GREETING]);
+    setInput("");
+    setError(null);
+    setLimitReached(null);
+    setChecklistVisible(false);
+  };
 
   // ─── Active: Inline Chat ───
   if (isActive) {
     return (
       <>
-        {/* Backdrop bei Expanded */}
         {isExpanded && (
           <div className="chat-backdrop" onClick={() => setIsExpanded(false)} />
         )}
@@ -130,7 +150,6 @@ export default function ChatSection() {
               {userCount < 3 ? `Frage ${Math.min(userCount + 1, 3)} von 3` : userCount === 3 ? "Empfehlung …" : "Deine Empfehlung"}
             </span>
 
-            {/* Expand / Collapse Button */}
             <button
               className="chat-expand-btn"
               onClick={() => setIsExpanded(!isExpanded)}
@@ -183,33 +202,46 @@ export default function ChatSection() {
               </div>
             )}
 
-            {/* Sanftes Rate Limit */}
-            {isRateLimited && (
+            {/* Sanftes Limit – Rate oder Message */}
+            {limitReached && (
               <div className="chat-rate-limit">
-                <div className="chat-rate-limit-icon">☕</div>
+                <div className="chat-rate-limit-icon">
+                  {limitReached === "rate" ? "☕" : "✨"}
+                </div>
                 <div className="chat-rate-limit-text">
-                  <strong>Genug für heute – gönn dir eine Pause!</strong>
-                  <p>Du hast schon viele Beratungen gestartet. Morgen bin ich wieder für dich da.</p>
+                  <strong>
+                    {limitReached === "rate"
+                      ? "Genug für heute – gönn dir eine Pause!"
+                      : "Das war eine ausführliche Beratung!"}
+                  </strong>
+                  <p>
+                    {limitReached === "rate"
+                      ? "Du hast schon viele Beratungen gestartet. Morgen bin ich wieder für dich da."
+                      : "Starte eine neue Beratung für frische Empfehlungen – oder stöbere weiter:"}
+                  </p>
                 </div>
                 <div className="chat-rate-limit-links">
-                  <a href="/magazin">📖 Magazin lesen</a>
+                  {limitReached === "message" && (
+                    <a href="#" onClick={(e) => { e.preventDefault(); handleNewChat(); }}>🔄 Neue Beratung</a>
+                  )}
+                  <a href="/magazin">📖 Magazin</a>
                   <a href="/versicherung">🛡️ Versicherungscheck</a>
-                  <a href="#themenwelten">🗺️ Themenwelten entdecken</a>
+                  <a href="#themenwelten">🗺️ Themenwelten</a>
                 </div>
               </div>
             )}
 
-            {error && !isRateLimited && <div className="chat-error">{error}</div>}
+            {error && !limitReached && <div className="chat-error">{error}</div>}
 
-            {/* Reise-Checkliste nach Empfehlung */}
-            {showChecklist && (
+            {/* Reise-Checkliste – bleibt sichtbar sobald einmal aktiviert */}
+            {checklistVisible && (
               <TravelChecklist messages={messages.map((m) => m.content)} />
             )}
 
             <div ref={messagesEndRef} />
           </div>
 
-          {!isRateLimited && (
+          {!limitReached && (
             <div className="chat-input-row">
               <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown} placeholder={isLoading ? "Einen Moment …" : "Antwort eingeben …"} disabled={isLoading} />

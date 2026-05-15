@@ -42,6 +42,6 @@ export function rateLimit(
 // Limits
 export const LIMITS = {
   CONVERSATIONS_PER_DAY: 50,    // Max Beratungen pro IP/Tag
-  MESSAGES_PER_CONVERSATION: 20, // Max Messages pro Conversation
+  MESSAGES_PER_CONVERSATION: 40, // Max Messages pro Conversation
   DAY_MS: 24 * 60 * 60 * 1000,
 };

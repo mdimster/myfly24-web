@@ -1615,3 +1615,7 @@ body {
   border-color: var(--color-navy-light);
   background: rgba(26, 40, 71, 0.02);
 }
+
+/* Fix: Trust-Strip hinter Expanded-Chat */
+.chat-backdrop { z-index: 200; }
+.chat-inline.chat-expanded { z-index: 201; }
