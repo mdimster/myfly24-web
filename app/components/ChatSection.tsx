@@ -66,9 +66,7 @@ export default function ChatSection() {
       !checklistVisible &&
       userCount >= 3 &&
       !isLoading &&
-      messages.length > 0 &&
-      messages[messages.length - 1]?.role === "assistant" &&
-      messages.filter((m) => m.role === "assistant").length >= 4 // Greeting + 3 Fragen + Empfehlung = min 4 assistant msgs
+      messages[messages.length - 1]?.role === "assistant"
     ) {
       setChecklistVisible(true);
     }
