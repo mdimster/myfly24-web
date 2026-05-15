@@ -21,7 +21,6 @@ export default function ChatSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [limitReached, setLimitReached] = useState<"rate" | "message" | null>(null);
-  const [checklistVisible, setChecklistVisible] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -59,18 +58,14 @@ export default function ChatSection() {
     }
   }, [messages, isActive]);
 
-  // Checkliste einmalig aktivieren wenn Empfehlung da ist
   const userCount = messages.filter((m) => m.role === "user").length;
-  useEffect(() => {
-    if (
-      !checklistVisible &&
-      userCount >= 3 &&
-      !isLoading &&
-      messages[messages.length - 1]?.role === "assistant"
-    ) {
-      setChecklistVisible(true);
-    }
-  }, [messages, isLoading, userCount, checklistVisible]);
+
+  // Checkliste zeigen sobald eine Empfehlung existiert (persistent)
+  const showChecklist = messages.some((msg, idx) => {
+    if (msg.role !== "assistant" || idx < 6) return false;
+    const usersBefore = messages.slice(0, idx).filter((m) => m.role === "user").length;
+    return usersBefore >= 3;
+  });
 
   // ESC schließt Expanded-Modus
   useEffect(() => {
@@ -128,7 +123,6 @@ export default function ChatSection() {
     setInput("");
     setError(null);
     setLimitReached(null);
-    setChecklistVisible(false);
   };
 
   // ─── Active: Inline Chat ───
@@ -232,7 +226,7 @@ export default function ChatSection() {
             {error && !limitReached && <div className="chat-error">{error}</div>}
 
             {/* Reise-Checkliste – bleibt sichtbar sobald einmal aktiviert */}
-            {checklistVisible && (
+            {showChecklist && (
               <TravelChecklist messages={messages.map((m) => m.content)} />
             )}
 
